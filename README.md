@@ -2,7 +2,7 @@
 <img src="https://user-images.githubusercontent.com/59097731/121178442-29003c00-c867-11eb-8851-b07d2c5ca7b6.png" width="600" />
 </p>
   
-This is the repository for Psych Enginr, original game by "NinjaMuffin99".
+This is the repository for Psych Engine, original game by "NinjaMuffin99".
 
 Play the Ludum Dare prototype here: https://ninja-muffin24.itch.io/friday-night-funkin
 Play the Newgrounds one here: https://www.newgrounds.com/portal/view/770371
