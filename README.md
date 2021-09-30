@@ -28,8 +28,8 @@ https://github.com/kviks/Psych-Engine-Android/releases/
 1. first of all we need to set up haxe and haxeflixel read more here - https://github.com/ninjamuffin99/Funkin
 
   - Install haxe 4.2.2 instead of 4.1.5
-  - if you updated it dont forget execute this command 'haxelib upgrade' and press 'y' everywhere
-  - Also get extension-webm using this command: 'haxelib git extension-webm https://github.com/KlavierGayming/extension-webm'
+  - if you updated it dont forget execute this command `haxelib upgrade` and press 'y' everywhere
+  - Also get extension-webm using this command: `haxelib git extension-webm https://github.com/KlavierGayming/extension-webm`
   - the reason we use a different repo again is cuz of a lil error that happens with the audio sync, just adds a "public var renderedFrames" instead of "var renderedFrames", that's all extra that's needed
 
 
