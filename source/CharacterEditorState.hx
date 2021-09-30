@@ -31,7 +31,8 @@ import haxe.Json;
 import Character;
 import flixel.system.debug.interaction.tools.Pointer.GraphicCursorCross;
 import lime.system.Clipboard;
-
+import ui.FlxVirtualPad;
+import flixel.system.FlxSound;
 #if MODS_ALLOWED
 import sys.FileSystem;
 #end
@@ -43,6 +44,8 @@ using StringTools;
  */
 class CharacterEditorState extends MusicBeatState
 {
+	var _pad:FlxVirtualPad;
+
 	var char:Character;
 	var textAnim:FlxText;
 	var bgLayer:FlxTypedGroup<FlxSprite>;
@@ -73,9 +76,11 @@ class CharacterEditorState extends MusicBeatState
 	var cameraFollowPointer:FlxSprite;
 	var healthBarBG:FlxSprite;
 
+	var chartMusic:FlxSound;
+
 	override function create()
 	{
-		FlxG.sound.music.stop();
+		chartMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'));
 
 		camEditor = new FlxCamera();
 		camHUD = new FlxCamera();
@@ -138,14 +143,9 @@ class CharacterEditorState extends MusicBeatState
 		add(camFollow);
 
 		var tipText:FlxText = new FlxText(FlxG.width - 20, FlxG.height - 5, 0,
-			"ESC - Go back to the Game
-			\nE/Q - Camera Zoom In/Out
-			\nJKLI - Move Camera
-			
-			\nW/S - Previous/Next Animation
-			\nSpace - Play Animation
-			\nArrow Keys - Move Character Offset
-			\nHold Shift to Move 10x faster\n", 15);
+			"BACK - Go back to the Game
+			\nLEFT/RIGHT - Previous/Next Animation
+			\nUP - Play Animation", 15);
 		tipText.cameras = [camHUD];
 		tipText.scrollFactor.set();
 		tipText.color = FlxColor.RED;
@@ -192,6 +192,10 @@ class CharacterEditorState extends MusicBeatState
 
 		FlxG.mouse.visible = true;
 		reloadCharacterOptions();
+
+		_pad = new FlxVirtualPad(FULL, NONE);
+    	_pad.alpha = 0.75;
+    	this.add(_pad);
 
 		super.create();
 	}
@@ -848,7 +852,14 @@ class CharacterEditorState extends MusicBeatState
 					inputTexts[i].caretIndex = inputTexts[i].text.length;
 					getEvent(FlxUIInputText.CHANGE_EVENT, inputTexts[i], null, []);
 				}
-				if(FlxG.keys.justPressed.ENTER) {
+
+				/* #if android
+				var androidback = FlxG.android.justReleased.BACK;
+				#else
+				var androidback = false;
+				#end */
+
+				if (FlxG.keys.justPressed.ENTER) {
 					inputTexts[i].hasFocus = false;
 				}
 				FlxG.sound.muteKeys = [];
@@ -863,7 +874,13 @@ class CharacterEditorState extends MusicBeatState
 		FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
 
 		if(!charDropDown.dropPanel.visible) {
-			if (FlxG.keys.justPressed.ESCAPE) {
+				#if android
+				var androidback = FlxG.android.justReleased.BACK;
+				#else
+				var androidback = false;
+				#end
+
+				if (FlxG.keys.justPressed.ENTER || androidback) {
 				MusicBeatState.switchState(new PlayState());
 				FlxG.mouse.visible = false;
 				return;
@@ -904,12 +921,12 @@ class CharacterEditorState extends MusicBeatState
 			}
 
 			if(char.animationsArray.length > 0) {
-				if (FlxG.keys.justPressed.W)
+				if (FlxG.keys.justPressed.A || _pad.buttonLeft.justPressed)
 				{
 					curAnim -= 1;
 				}
 
-				if (FlxG.keys.justPressed.S)
+				if (FlxG.keys.justPressed.D || _pad.buttonRight.justPressed)
 				{
 					curAnim += 1;
 				}
@@ -920,13 +937,13 @@ class CharacterEditorState extends MusicBeatState
 				if (curAnim >= char.animationsArray.length)
 					curAnim = 0;
 
-				if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.W || FlxG.keys.justPressed.SPACE)
+				if (FlxG.keys.justPressed.A || FlxG.keys.justPressed.D || FlxG.keys.justPressed.UP || _pad.buttonLeft.justPressed || _pad.buttonRight.justPressed || _pad.buttonUp.justPressed)
 				{
 					char.playAnim(char.animationsArray[curAnim].anim, true);
 					genBoyOffsets();
 				}
 
-				var controlArray:Array<Bool> = [FlxG.keys.justPressed.LEFT, FlxG.keys.justPressed.RIGHT, FlxG.keys.justPressed.UP, FlxG.keys.justPressed.DOWN];
+				var controlArray:Array<Bool> = [controls.UI_LEFT, controls.UI_RIGHT, controls.UI_UP, controls.UI_DOWN];
 				for (i in 0...controlArray.length) {
 					if(controlArray[i]) {
 						var holdShift = FlxG.keys.pressed.SHIFT;
@@ -1019,6 +1036,8 @@ class CharacterEditorState extends MusicBeatState
 		};
 
 		var data:String = Json.stringify(json, "\t");
+
+		openfl.system.System.setClipboard(data.trim());
 
 		if (data.length > 0)
 		{
