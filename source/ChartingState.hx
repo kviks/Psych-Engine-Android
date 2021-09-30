@@ -296,7 +296,7 @@ class ChartingState extends MusicBeatState
         key_shift.alpha = 0.75;
         add(key_shift);
 
-		_pad = new FlxVirtualPad(RIGHT_FULL, NONE);
+		_pad = new FlxVirtualPad(FULL, NONE);
     	_pad.alpha = 0.75;
     	this.add(_pad);
 
@@ -1024,7 +1024,13 @@ class ChartingState extends MusicBeatState
 
 		if (!blockInput)
 		{
-			if (FlxG.keys.justPressed.ENTER)
+			#if android
+			var androidback = FlxG.android.justReleased.BACK;
+			#else
+			var androidback = false;
+			#end
+
+			if (FlxG.keys.justPressed.ENTER #if mobileC || androidback #end)
 			{
 				FlxG.mouse.visible = false;
 				PlayState.SONG = _song;
@@ -1731,7 +1737,9 @@ class ChartingState extends MusicBeatState
 			"song": _song
 		};
 
-    var data:String = Json.stringify(json, "\t");
+		var data:String = Json.stringify(json);
+
+		openfl.system.System.setClipboard(data.trim());
 
 		if ((data != null) && (data.length > 0))
 		{
