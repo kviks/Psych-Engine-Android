@@ -15,6 +15,10 @@ You can do this with: `haxelib install linc_luajit` on a Command prompt/PowerShe
 ### Special Thanks
 * Keoiki - Note Splash Animations
 
+#### Android Port
+* Kviks 
+* Sirox
+
 WARNING: This engine is still very early in development! You can request new features though
 _____________________________________
 
