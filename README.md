@@ -10,6 +10,10 @@ Support the project on the itch.io page: https://ninja-muffin24.itch.io/funkin
 
 IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMIPLED VERSION, YOU MUST OPEN SOURCE YOUR MOD AS WELL
 
+## Attractive animated dialogue boxes:
+
+![](https://user-images.githubusercontent.com/44785097/127706669-71cd5cdb-5c2a-4ecc-871b-98a276ae8070.gif)
+
 # download
 
 https://github.com/kviks/Psych-Engine-Android/releases/
@@ -67,12 +71,14 @@ https://github.com/kviks/Psych-Engine-Android/releases/
 
 
 ## Credits
-
-- [ninjamuffin99](https://twitter.com/ninja_muffin99) - Programmer
-- [PhantomArcade3K](https://twitter.com/phantomarcade3k) - Art
-- [Evilsk8r](https://twitter.com/evilsk8r) - Art
-- [Kawaisprite](https://twitter.com/kawaisprite) - Musician
-- [luckydog](https://github.com/luckydog7) - original android port
-- [kviks (me!)](https://github.com/kviks) - psych engine port
+- Shadow Mario - Coding Psych Engine
+- RiverOaken - Arts and Animations Psych Engine
+- Keoiki - Note Splash Animations Psych Engine
+- ninjamuffin99 - Programmer original FNF
+- PhantomArcade3K - Art original FNF
+- Evilsk8r - Art original FNF
+- Kawaisprite- Musician original FNF
+- luckydog - original android port
+- kviks (me!) - psych engine port
 
 This game was made with love to Newgrounds and it's community. Extra love to Tom Fulp.
