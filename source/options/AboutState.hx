@@ -37,7 +37,7 @@ class AboutState extends MusicBeatState
 		logoBl.screenCenter();
 		logoBl.y = logoBl.y - 100;
 
-		text = new FlxText(0, 0, 0, "PORTED BY KVIKS AND SIROX (PSYCH ENGINE PORT)", 64);
+		text = new FlxText(0, 0, 0, "version psych - 0.3.4", 64);
 		text.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 		text.screenCenter();
 		text.y = text.y + 150;
@@ -63,7 +63,7 @@ class AboutState extends MusicBeatState
 		#if android
 		if (FlxG.android.justReleased.BACK)
 		{
-			FlxG.switchState(new MainMenuState());
+			FlxG.switchState(new OptionsState());
 		}
 		#end
 
