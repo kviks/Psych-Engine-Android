@@ -25,12 +25,16 @@ import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 import Controls;
 
+import options.CustomControlsState;
+import options.AboutState;
+import ui.FlxVirtualPad;
+
 using StringTools;
 
 // TO DO: Redo the menu creation system for not being as dumb
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Notes', 'Controls', 'About', 'Preferences'];
+	var options:Array<String> = ['Preferences', 'Notes', 'Mobile Controls', 'About'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -92,17 +96,17 @@ class OptionsState extends MusicBeatState
 			}
 
 			switch(options[curSelected]) {
+				case 'Preferences':
+					openSubState(new PreferencesSubstate());
+
 				case 'Notes':
 					openSubState(new NotesSubstate());
 
-				case 'Controls':
-					FlxG.switchState(new options.CustomControlsState());
+				case 'Mobile Controls':
+					MusicBeatState.switchState(new options.CustomControlsState());
 
 				case 'About':
-					FlxG.switchState(new options.AboutState());
-
-				case 'Preferences':
-					openSubState(new PreferencesSubstate());
+					MusicBeatState.switchState(new options.AboutState());
 			}
 		}
 	}
