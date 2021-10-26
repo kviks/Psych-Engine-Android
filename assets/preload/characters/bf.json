@@ -14,7 +14,7 @@
 		{
 			"loop": false,
 			"offsets": [
-				12,
+				5,
 				-6
 			],
 			"anim": "singLEFT",
@@ -47,7 +47,7 @@
 		{
 			"loop": false,
 			"offsets": [
-				-38,
+				-48,
 				-7
 			],
 			"anim": "singRIGHT",
@@ -58,8 +58,8 @@
 		{
 			"loop": false,
 			"offsets": [
-				12,
-				24
+				7,
+				19
 			],
 			"anim": "singLEFTmiss",
 			"fps": 24,
@@ -69,7 +69,7 @@
 		{
 			"loop": false,
 			"offsets": [
-				-11,
+				-15,
 				-19
 			],
 			"anim": "singDOWNmiss",
@@ -80,7 +80,7 @@
 		{
 			"loop": false,
 			"offsets": [
-				-29,
+				-36,
 				27
 			],
 			"anim": "singUPmiss",
@@ -91,8 +91,8 @@
 		{
 			"loop": false,
 			"offsets": [
-				-30,
-				21
+				-44,
+				22
 			],
 			"anim": "singRIGHTmiss",
 			"fps": 24,
@@ -163,6 +163,39 @@
 			"anim": "deathConfirm",
 			"fps": 24,
 			"name": "BF Dead confirm",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-10,
+				-16
+			],
+			"anim": "dodge",
+			"fps": 24,
+			"name": "boyfriend dodge",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				294,
+				267
+			],
+			"anim": "attack",
+			"fps": 24,
+			"name": "boyfriend attack",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-40,
+				-40
+			],
+			"anim": "pre-attack",
+			"fps": 24,
+			"name": "bf pre attack",
 			"indices": []
 		}
 	],

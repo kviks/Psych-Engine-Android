@@ -460,7 +460,7 @@ class Controls extends FlxActionSet
 
 				var x = Tinputs.length;
 				while (x-- > 0)
-					if (Tinputs[x] == input)
+					//if (Tinputs[x] == input)
 						action.remove(input);
 			}
 		}
@@ -702,7 +702,6 @@ class Controls extends FlxActionSet
 		#end
 	}
 
-
 	inline static function addKeys(action:FlxActionDigital, keys:Array<FlxKey>, state:FlxInputState)
 	{
 		for (key in keys)
@@ -727,23 +726,25 @@ class Controls extends FlxActionSet
 			removeKeyboard();
 
 		keyboardScheme = scheme;
+		var keysMap = ClientPrefs.keyBinds;
 		
 		#if (haxe >= "4.0.0")
 		switch (scheme)
 		{
 			case Solo:
-				inline bindKeys(Control.UI_UP, [W, FlxKey.UP]);
-				inline bindKeys(Control.UI_DOWN, [S, FlxKey.DOWN]);
-				inline bindKeys(Control.UI_LEFT, [A, FlxKey.LEFT]);
-				inline bindKeys(Control.UI_RIGHT, [D, FlxKey.RIGHT]);
-				inline bindKeys(Control.NOTE_UP, [W, FlxKey.UP]);
-				inline bindKeys(Control.NOTE_DOWN, [S, FlxKey.DOWN]);
-				inline bindKeys(Control.NOTE_LEFT, [A, FlxKey.LEFT]);
-				inline bindKeys(Control.NOTE_RIGHT, [D, FlxKey.RIGHT]);
-				inline bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
-				inline bindKeys(Control.BACK, [X, BACKSPACE, ESCAPE]);
-				inline bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
-				inline bindKeys(Control.RESET, [R]);
+				inline bindKeys(Control.UI_UP, keysMap.get('ui_up'));
+				inline bindKeys(Control.UI_DOWN, keysMap.get('ui_down'));
+				inline bindKeys(Control.UI_LEFT, keysMap.get('ui_left'));
+				inline bindKeys(Control.UI_RIGHT, keysMap.get('ui_right'));
+				inline bindKeys(Control.NOTE_UP, keysMap.get('note_up'));
+				inline bindKeys(Control.NOTE_DOWN, keysMap.get('note_down'));
+				inline bindKeys(Control.NOTE_LEFT, keysMap.get('note_left'));
+				inline bindKeys(Control.NOTE_RIGHT, keysMap.get('note_right'));
+
+				inline bindKeys(Control.ACCEPT, keysMap.get('accept'));
+				inline bindKeys(Control.BACK, keysMap.get('back'));
+				inline bindKeys(Control.PAUSE, keysMap.get('pause'));
+				inline bindKeys(Control.RESET, keysMap.get('reset'));
 			case Duo(true):
 				inline bindKeys(Control.UI_UP, [W]);
 				inline bindKeys(Control.UI_DOWN, [S]);

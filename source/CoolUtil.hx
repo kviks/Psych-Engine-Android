@@ -34,7 +34,7 @@ class CoolUtil
 
 	public static function coolTextFile(path:String):Array<String>
 	{
-		#if windows
+		#if dontUseManifest
 		var daList:Array<String> = File.getContent(path).trim().split('\n');
 		#else
 		var daList:Array<String> = Assets.getText(path).trim().split('\n');

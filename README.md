@@ -1,18 +1,29 @@
-<p align="center"> 
-<img src="https://user-images.githubusercontent.com/59097731/121178442-29003c00-c867-11eb-8851-b07d2c5ca7b6.png" width="600" />
-</p>
-  
-This is the repository for Psych Engine, original game by "NinjaMuffin99".
+# Friday Night Funkin' - Psych Engine
+Engine originally used on [Mind Games Mod](https://gamebanana.com/mods/301107), intended to be a fix for the vanilla version's many issues while keeping the casual play aspect of it. Also aiming to be an easier alternative to newbie coders.
 
-Play the Ludum Dare prototype here: https://ninja-muffin24.itch.io/friday-night-funkin
-Play the Newgrounds one here: https://www.newgrounds.com/portal/view/770371
-Support the project on the itch.io page: https://ninja-muffin24.itch.io/funkin
+## Installation:
+Follow a Friday Night Funkin' source code compilation tutorial, after this you will need to install LuaJIT.
 
-IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMIPLED VERSION, YOU MUST OPEN SOURCE YOUR MOD AS WELL
+You can do this with: `haxelib install linc_luajit` on a Command prompt/PowerShell
+
+...Or if you don't want your mod to be able to run .lua scripts, delete the "LUA_ALLOWED" line on Project.xml
+
+## Credits:
+* Shadow Mario - Coding
+* RiverOaken - Arts and Animations
+
+### Special Thanks
+* Keoiki - Note Splash Animations
+
+WARNING: This engine is still very early in development! You can request new features though
+_____________________________________
+
+# Features
 
 ## Attractive animated dialogue boxes:
 
 ![](https://user-images.githubusercontent.com/44785097/127706669-71cd5cdb-5c2a-4ecc-871b-98a276ae8070.gif)
+
 
 ## Atleast one change to every week:
 ### Week 1:
@@ -35,71 +46,41 @@ IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMIPLED VERSION, YOU MUST OPEN 
   * On Thorns, the HUD is hidden during the cutscene
   * Also there's the Background girls being spooky during the "Hey!" parts of the Instrumental
 
-# download
+## Cool new Chart Editor changes and countless bug fixes
+![](https://i.imgur.com/h6Ja7eT.png)
+* You can now chart "Event" notes, which are bookmarks that trigger specific actions that usually were hardcoded on the vanilla version of the game.
+* Your song's BPM can now have decimal values
+* You can manually adjust a Note's strum time if you're really going for milisecond precision
+* You can change a note's type on the Editor, it comes with two example types:
+  * Alt Animation: Forces an alt animation to play, useful for songs like Ugh/Stress
+  * Hey: Forces a "Hey" animation instead of the base Sing animation, if Boyfriend hits this note, Girlfriend will do a "Hey!" too.
 
-https://github.com/kviks/Psych-Engine-Android/releases/
+## Improved Animation Debug menu (Press 8 in-game on a Debug build)
+![](https://user-images.githubusercontent.com/44785097/127721062-f912853c-2513-41b8-bd66-fd80d9d4ee0f.png)
+* You can now press Save Offsets to save a .txt file with the editted offsets
+* You can also now change the characters while on the Menu
+* Go back to the game by pressing Escape
+NOTE: This should be used for fixing your character floating or being slightly under the ground! It's not for texture editting.
 
+## Story mode menu rework:
+![](https://i.imgur.com/UB2EKpV.png)
+* Added a different BG to every song (less Tutorial)
+* All menu characters are now in individual spritesheets, makes modding it easier.
 
-# screenshots
-<div>
-<img src="https://user-images.githubusercontent.com/59097731/104103630-31eae280-52b4-11eb-90a4-5bdb1b39fc53.jpg" width="200" />
-<img src="https://user-images.githubusercontent.com/59097731/104103635-34e5d300-52b4-11eb-96f8-13910580fbc8.jpg" width="200" />
-<img src="https://user-images.githubusercontent.com/59097731/104103636-36af9680-52b4-11eb-8740-f7be0c098265.jpg" width="200" />
-<img src="https://user-images.githubusercontent.com/59097731/104103637-37e0c380-52b4-11eb-8f84-87892f3e5d85.jpg" width="200" />
-</div>
+## Credits menu
+![](https://i.imgur.com/NdIQt3d.png)
+* You can add a head icon, name, description and a Redirect link for when the player presses Enter while the item is currently selected.
 
-# Build instructions (by luckydog7)
+## Awards/Achievements
+* The engine comes with 16 example achievements that you can mess with and learn how it works (Check Achievements.hx and search for "checkForAchievement" on PlayState.hx)
 
-1. first of all we need to set up haxe and haxeflixel read more here - https://github.com/ninjamuffin99/Funkin
+## Options menu:
+* You can change Note colors, Controls and Preferences there.
+ * On Preferences you can toggle Downscroll, Anti-Aliasing, Framerate, Low Quality, Note Splashes, Hide Hud elements, Flashing Lights, etc.
 
-  - Install haxe 4.2.2 instead of 4.1.5
-  - if you updated it dont forget execute this command `haxelib upgrade` and press 'y' everywhere
-  - Also get extension-webm using this command: `haxelib git extension-webm https://github.com/KlavierGayming/extension-webm`
-  - the reason we use a different repo again is cuz of a lil error that happens with the audio sync, just adds a "public var renderedFrames" instead of "var renderedFrames", that's all extra that's needed
-
-
-2. after that, download Android studio, Jdk, Ndk revision 15c from these sites
-
-  - jdk - https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
-
-  - android studio - https://developer.android.com/studio
-
-  - ndk - https://developer.android.com/ndk/downloads/older_releases?hl=fi
-
-
-3.install jdk, android studio 
-  - unzip ndk (ndk does not need to be installed)
-
-
-4. we need to set up android studio for this go to android studio and find android sdk (in settings -> Appearance & Behavior -> system settings -> android sdk)
-![andr](https://user-images.githubusercontent.com/59097731/104179652-44346000-541d-11eb-8ad1-1e4dfae304a8.PNG)
-![andr2](https://user-images.githubusercontent.com/59097731/104179943-a9885100-541d-11eb-8f69-7fb5a4bfdd37.PNG)
-
-
-5.and run command `lime setup android`
-  - you need to insert the program paths
-
-  - as in this picture (use jdk, not jre)
-![lime](https://user-images.githubusercontent.com/59097731/104179268-9e80f100-541c-11eb-948d-a00d85317b1a.PNG)
-
-  - Now do "lime rebuild extension-webm windows" (in the command line), if you're planning to build for windows. If you're plannin to build for android (which you obviously are), use "lime rebuild extension-webm android". If you get an error, download [this](https://www.mediafire.com/file/8jteungeq2bzc3l/Android.zip/file) and put the folder inside it in C:/HaxeToolkit/haxe/lib/extension-webm/git/ndll
-
-
-7. open project in command line `cd (path to fnf source)`
-  - and run command `haxelib install linc-luajit`
-  - and run command `lime build android`
-  - apk will be generated in this path (path to source)\export\release\android\bin\app\build\outputs\apk\debug\Funkin-debug.apk
-
-
-## Credits
-- Shadow Mario - Coding Psych Engine
-- RiverOaken - Arts and Animations Psych Engine
-- Keoiki - Note Splash Animations Psych Engine
-- ninjamuffin99 - Programmer original FNF
-- PhantomArcade3K - Art original FNF
-- Evilsk8r - Art original FNF
-- Kawaisprite- Musician original FNF
-- luckydog - original android port
-- kviks (me!) - psych engine port
-
-This game was made with love to Newgrounds and it's community. Extra love to Tom Fulp.
+## Other gameplay features:
+* When the enemy hits a note, it plays the note hit animation on their strum, just like when the player hits a note.
+* Lag doesn't impact the camera movement and player icon scaling anymore.
+* Some stuff based on Week 7's changes has been put in (Background colors on Freeplay, Note splashes)
+* You can reset your Score on Freeplay/Story Mode by pressing Reset button.
+* You can listen to a song on Freeplay by pressing Space once.

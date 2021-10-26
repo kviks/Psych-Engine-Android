@@ -3,6 +3,8 @@ package;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.FlxSubState;
+import flixel.FlxBasic;
+import flixel.FlxSprite;
 #if mobileC
 import flixel.FlxCamera;
 import ui.FlxVirtualPad;
@@ -25,6 +27,7 @@ class MusicBeatSubstate extends FlxSubState
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
+
 	#if mobileC
 	var _virtualpad:FlxVirtualPad;
 

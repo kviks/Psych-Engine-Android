@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="PSYCH ENGINE BUGFIX" file="PsychEngine" packageName="com.shadowmario.psychengine" package="com.shadowmario.psychengine" main="Main" version="0.2.7" company="shadowmario" />
+	<app title="Friday Night Funkin': Psych Engine" file="PsychEngine" packageName="com.shadowmario.psychengine" package="com.shadowmario.psychengine" main="Main" version="0.2.7" company="ShadowMario" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -14,6 +14,8 @@
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
+	
+	<define name="dontUseManifest" if="desktop" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -33,13 +35,13 @@
 	<assets path="assets/shared/images/hitbox"/>
 
 	<!--Switch-specific-->
-	<window if="switch" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="true" />
+	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
-	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
+	<set name="BUILD_DIR" value="export/32bit" if="32bits" />
 
 	<classpath name="source" />
 
@@ -47,20 +49,22 @@
 	<assets path="assets/preload" rename="assets" exclude="*.mp3"  unless="web"/>
 	
 	<!-- PSYCH ENGINE CUSTOMIZATION -->
-	<define name="MODS_ALLOWED" if="mobile" />
-	<define name="LUA_ALLOWED" if="desktop" />
-	<define name="ONLY_WINDOWS" if="desktop" />
+	<define name="MODS_ALLOWED" if="desktop || mobile" />
+	<define name="LUA_ALLOWED" if="windows" />
 	<define name="ACHIEVEMENTS_ALLOWED" />
+	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits"/>
+
+	<!-- DONT ENABLE THIS -->
+	<define name="CHECK_FOR_UPDATES" if="desktop officialBuild"/>
 
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
 	
+	<!-- <library name="videos"        preload="true" /> -->
 	<section if="PRELOAD_ALL">
 		<library name="songs"         preload="true" />
 		<library name="shared"        preload="true" />
-		<library name="tutorial"      preload="true" />
-		<library name="week1"         preload="true" />
 		<library name="week2"         preload="true" />
 		<library name="week3"         preload="true" />
 		<library name="week4"         preload="true" />
@@ -71,8 +75,6 @@
 	<section if="NO_PRELOAD_ALL">
 		<library name="songs"         preload="false" />
 		<library name="shared"        preload="false" />
-		<library name="tutorial"      preload="false" />
-		<library name="week1"         preload="false" />
 		<library name="week2"         preload="false" />
 		<library name="week3"         preload="false" />
 		<library name="week4"         preload="false" />
@@ -80,14 +82,13 @@
 		<library name="week6"         preload="false" />
 	</section>
 	
+	<!-- <assets path="plugins/"             rename=''               if="VIDEOS_ALLOWED windows" />
+	<assets path="dlls/"                rename=''               if="VIDEOS_ALLOWED windows" />
+	<assets path="assets/videos"        library="videos"        if="VIDEOS_ALLOWED"/> -->
 	<assets path="assets/songs"         library="songs"         exclude="*.ogg" if="web"/>
 	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web"/>
 	<assets path="assets/shared"        library="shared"        exclude="*.ogg" if="web"/>
 	<assets path="assets/shared"        library="shared"        exclude="*.mp3" unless="web"/>
-	<assets path="assets/tutorial"      library="tutorial"      exclude="*.ogg" if="web"/>
-	<assets path="assets/tutorial"      library="tutorial"      exclude="*.mp3" unless="web"/>
-	<assets path="assets/week1"         library="week1"         exclude="*.ogg" if="web"/>
-	<assets path="assets/week1"         library="week1"         exclude="*.mp3" unless="web"/>
 	<assets path="assets/week2"         library="week2"         exclude="*.ogg" if="web"/>
 	<assets path="assets/week2"         library="week2"         exclude="*.mp3" unless="web"/>
 	<assets path="assets/week3"         library="week3"         exclude="*.ogg" if="web"/>
