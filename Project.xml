@@ -61,10 +61,11 @@
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
 	
-	<!-- <library name="videos"        preload="true" /> -->
 	<section if="PRELOAD_ALL">
 		<library name="songs"         preload="true" />
 		<library name="shared"        preload="true" />
+		<library name="tutorial"      preload="true" />
+		<library name="week1"         preload="true" />
 		<library name="week2"         preload="true" />
 		<library name="week3"         preload="true" />
 		<library name="week4"         preload="true" />
@@ -75,20 +76,23 @@
 	<section if="NO_PRELOAD_ALL">
 		<library name="songs"         preload="false" />
 		<library name="shared"        preload="false" />
+		<library name="tutorial"      preload="false" />
+		<library name="week1"         preload="false" />
 		<library name="week2"         preload="false" />
 		<library name="week3"         preload="false" />
 		<library name="week4"         preload="false" />
 		<library name="week5"         preload="false" />
 		<library name="week6"         preload="false" />
 	</section>
-	
-	<!-- <assets path="plugins/"             rename=''               if="VIDEOS_ALLOWED windows" />
-	<assets path="dlls/"                rename=''               if="VIDEOS_ALLOWED windows" />
-	<assets path="assets/videos"        library="videos"        if="VIDEOS_ALLOWED"/> -->
+
 	<assets path="assets/songs"         library="songs"         exclude="*.ogg" if="web"/>
 	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web"/>
 	<assets path="assets/shared"        library="shared"        exclude="*.ogg" if="web"/>
 	<assets path="assets/shared"        library="shared"        exclude="*.mp3" unless="web"/>
+	<assets path="assets/tutorial"      library="tutorial"      exclude="*.ogg" if="web"/>
+	<assets path="assets/tutorial"      library="tutorial"      exclude="*.mp3" unless="web"/>
+	<assets path="assets/week1"         library="week1"         exclude="*.ogg" if="web"/>
+	<assets path="assets/week1"         library="week1"         exclude="*.mp3" unless="web"/>
 	<assets path="assets/week2"         library="week2"         exclude="*.ogg" if="web"/>
 	<assets path="assets/week2"         library="week2"         exclude="*.mp3" unless="web"/>
 	<assets path="assets/week3"         library="week3"         exclude="*.ogg" if="web"/>
@@ -120,6 +124,10 @@
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript" />
+
+	<!--Video-->
+	<haxelib name="actuate" />
+	<haxelib name="extension-webm"/>
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />

@@ -27,6 +27,9 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
+#if sys
+import sys.FileSystem;
+#end
 
 using StringTools;
 
@@ -47,7 +50,6 @@ class TitleState extends MusicBeatState
 	var curWacky:Array<String> = [];
 
 	var wackyImage:FlxSprite;
-
 	var easterEggEnabled:Bool = true; //Disable this to hide the easter egg
 	var easterEggKeyCombination:Array<FlxKey> = [FlxKey.B, FlxKey.B]; //bb stands for bbpanzu cuz he wanted this lmao
 	var lastKeysPressed:Array<FlxKey> = [];
@@ -57,6 +59,9 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		//FileSystem.createDirectory('${lime.system.System.applicationStorageDirectory}/PsychEngine/${lime.app.Application.current.meta.get('packageName')}/mods/');
+		//FileSystem.createDirectory('${lime.system.System.applicationStorageDirectory}/PsychEngine/${lime.app.Application.current.meta.get('packageName')}/assets/');
+		
 		#if android
 	    FlxG.android.preventDefaultKeys = [BACK];
 	    #end
@@ -64,7 +69,7 @@ class TitleState extends MusicBeatState
 		#if (polymod && !html5)
 		polymod.Polymod.init({modRoot: "mods", dirs: folders});
 		#end
-		
+
 		#if CHECK_FOR_UPDATES
 		if(!closedState) {
 			trace('checking for update');
