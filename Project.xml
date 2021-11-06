@@ -116,6 +116,11 @@
 		NOT USING A DIRECT THING TO THE ASSET!!!
 	-->
 	<assets path="assets/fonts" embed='true'/>
+	
+	<!-- SUS -->
+	<config:android permission="android.permission.STORAGE_INTERNAL" />
+   	<config:android permission="android.permission.READ_EXTERNAL_STORAGE" />
+	
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
