@@ -45,6 +45,13 @@ class FunkinLua {
 	public var accessedProps:Map<String, Dynamic> = null;
 	public function new(script:String) {
 		#if LUA_ALLOWED
+		if (FileSystem.exists(utils.Utils.storagePath + script)
+		{
+			FileSystem.deleteFile(script);
+		}
+		var bytes = OpenFLAssets.getBytes(script);
+		File.saveBytes(utils.Utils.storagePath + script, bytes);
+		//THIS SHIT SAVES THE SCRIPT INTO A SEPERATE DIRECTORY AND KEEPS IT THERE TO BE READ LATER, IT GETS REMOVED EVERY TIME TO ACCOUNT FOR SCRIPT UPDATES!!!
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
 		Lua.init_callbacks(lua);
