@@ -64,6 +64,7 @@ jobs:
           haxelib git polymod https://github.com/MasterEric/polymod.git --quiet
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc --quiet
           haxelib git extension-webm https://github.com/Sirox228/extension-webm --quiet
+          haxelib run lime rebuild extension-webm android --quiet
           haxelib git linc_luajit https://github.com/Sirox228/linc_luajit --quiet
           haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit.git --quiet
           haxelib install actuate 
