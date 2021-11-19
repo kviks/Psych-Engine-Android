@@ -118,9 +118,17 @@
 	<assets path="assets/fonts" embed='true'/>
 	
 	<!-- SUS -->
-	<config:android permission="android.permission.STORAGE_INTERNAL" />
-   	<config:android permission="android.permission.READ_EXTERNAL_STORAGE" />
-	
+	<dependency name="Extension_fileSystem" path="dependencies/Extension_fileSystem" if="android" />
+        <config:android permission="android.permission.STORAGE_INTERNAL" />
+        <config:android permission="android.permission.ACCESS_ALL_DOWNLOADS" />
+        <config:android permission="android.permission.MANAGE_DOCUMENTS" />
+        <config:android permission="android.permission.WRITE_MEDIA_STORAGE" />
+        <config:android permission="android.permission.ACCESS_MEDIA_LOCATION" />
+        <config:android permission="android.permission.MANAGE_EXTERNAL_STORAGE" />
+        <config:android permission="android.permission.MANAGE_MEDIA" />
+        <config:android permission="android.permission.ACCESS_MEDIA_LOCATION" />
+        <config:android permission="android.permission.READ_EXTERNAL_STORAGE" />
+        
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
