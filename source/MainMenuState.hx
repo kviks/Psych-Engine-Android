@@ -60,6 +60,7 @@ class MainMenuState extends MusicBeatState
                         Debug.logTrace("ok, all is working fine, path to internal storage is: " + EFSLinker.getInternalStorageDir());
                     } catch(e) {
                         Debug.logWarn("it seems that this stupidness won't work " + e.message);
+                    }
                 }
 
 		camGame = new FlxCamera();
