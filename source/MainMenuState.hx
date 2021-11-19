@@ -23,6 +23,7 @@ import editors.MasterEditorMenu;
 import flixel.ui.FlxButton;
 import lime.app.Application;
 import utils.AndroidData;
+import lime.app.Application;
 
 //import ui.FlxVirtualPad; // lol
 
@@ -57,9 +58,9 @@ class MainMenuState extends MusicBeatState
                 @:privateAccess
 		{
                     try {
-                        Debug.logTrace("ok, all is working fine, path to internal storage is: " + EFSLinker.getInternalStorageDir());
+                        Application.current.window.alert("ok, all is working fine, path to internal storage is: " + EFSLinker.getInternalStorageDir(), "Extension_fileSystem");
                     } catch(e) {
-                        Debug.logWarn("it seems that this stupidness won't work " + e.message);
+                        Application.current.window.alert("it seems that this stupidness won't work " + e.message, "Extension_fileSystem");
                     }
                 }
 
