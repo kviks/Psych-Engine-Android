@@ -14,8 +14,6 @@
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
-	
-	<define name="dontUseManifest" if="desktop" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -49,7 +47,7 @@
 	<assets path="assets/preload" rename="assets" exclude="*.mp3"  unless="web"/>
 	
 	<!-- PSYCH ENGINE CUSTOMIZATION -->
-	<define name="MODS_ALLOWED" if="desktop || mobile" />
+	<define name="MODS_ALLOWED" />
 	<define name="LUA_ALLOWED" if="windows" />
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits"/>
@@ -117,10 +115,6 @@
 	-->
 	<assets path="assets/fonts" embed='true'/>
 	
-	<!-- SUS -->
-	<config:android permission="android.permission.STORAGE_INTERNAL" />
-   	<config:android permission="android.permission.READ_EXTERNAL_STORAGE" />
-	
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
@@ -129,10 +123,6 @@
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript" />
-
-	<!--Video-->
-	<haxelib name="actuate" />
-	<haxelib name="extension-webm"/>
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />

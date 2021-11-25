@@ -59,9 +59,6 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		//FileSystem.createDirectory('${lime.system.System.applicationStorageDirectory}/PsychEngine/${lime.app.Application.current.meta.get('packageName')}/mods/');
-		//FileSystem.createDirectory('${lime.system.System.applicationStorageDirectory}/PsychEngine/${lime.app.Application.current.meta.get('packageName')}/assets/');
-		
 		#if android
 	    FlxG.android.preventDefaultKeys = [BACK];
 	    #end

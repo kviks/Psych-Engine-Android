@@ -68,6 +68,9 @@ class ResetScoreSubState extends MusicBeatSubstate
 		noText.x += 200;
 		add(noText);
 		updateOptions();
+		#if mobileC
+		addVirtualPad(LEFT_RIGHT, A_B);
+		#end
 	}
 
 	override function update(elapsed:Float)
@@ -86,7 +89,7 @@ class ResetScoreSubState extends MusicBeatSubstate
 			onYes = !onYes;
 			updateOptions();
 		}
-		if(controls.BACK) {
+		if(controls.BACK || FlxG.android.justReleased.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'), 1);
 			close();
 		} else if(controls.ACCEPT) {

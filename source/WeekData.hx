@@ -1,6 +1,6 @@
 package;
 
-#if dontUseManifest
+#if !android
 import sys.io.File;
 import sys.FileSystem;
 #end
@@ -77,7 +77,7 @@ class WeekData {
 	{
 		weeksList = [];
 		weeksLoaded.clear();
-		#if dontUseManifest
+		#if !android
 		var directories:Array<String> = [Paths.mods(), Paths.getPreloadPath()];
 		var originalLength:Int = directories.length;
 		if(FileSystem.exists(Paths.mods())) {
@@ -103,7 +103,7 @@ class WeekData {
 					if(week != null) {
 						var weekFile:WeekData = new WeekData(week);
 
-						#if dontUseManifest
+						#if !android
 						if(j >= originalLength) {
 							weekFile.folder = directories[j].substring(Paths.mods().length, directories[j].length-1);
 						}
@@ -118,7 +118,7 @@ class WeekData {
 			}
 		}
 
-		#if dontUseManifest
+		#if !android
 		for (i in 0...directories.length) {
 			var directory:String = directories[i] + 'weeks/';
 			if(FileSystem.exists(directory)) {
@@ -149,7 +149,7 @@ class WeekData {
 
 	private static function getWeekFile(path:String):WeekFile {
 		var rawJson:String = null;
-		#if dontUseManifest
+		#if !android
 		if(FileSystem.exists(path)) {
 			rawJson = File.getContent(path);
 		}

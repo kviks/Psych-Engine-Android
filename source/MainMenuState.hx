@@ -37,15 +37,13 @@ class MainMenuState extends MusicBeatState
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
 
-	var key_editors:FlxButton;
+	var keyeditors:FlxUIButton;
 	
-	var optionShit:Array<String> = ['story_mode', 'freeplay', #if ACHIEVEMENTS_ALLOWED 'awards', #end 'credits', #if !switch 'donate', #end 'options'/*, 'lol'*/];
+	var optionShit:Array<String> = ['story_mode', 'freeplay', 'credits', 'donate', 'options'];
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
-
-	var blackBorder:FlxSprite;
 
 	override function create()
 	{
@@ -116,7 +114,11 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "v" + Application.current.meta.get('version') + " " + Assets.getText("assets/aboutmod.txt"), 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
+		versionShit.scrollFactor.set();
+		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(versionShit);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 24, 0, "Friday Night Funkin' v" + Application.current.meta.get('version'), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -138,10 +140,11 @@ class MainMenuState extends MusicBeatState
 		}
 		#end
 
-		key_editors = new FlxButton(60, 60, "");
-    	key_editors.loadGraphic(Paths.image("key_editors"));
-    	key_editors.alpha = 0.75;
-    	add(key_editors);
+		keyeditors = new FlxUIButton(60, 60, "Editors");
+        keyeditors.setLabelFormat("VCR OSD Mono",24,FlxColor.BLACK,"center");
+		keyeditors.resize(125,50);
+        keyeditors.alpha = 0.75;
+        add(keyeditors);
 
  	 	addVirtualPad(FULL, A_B);
 
@@ -239,13 +242,11 @@ class MainMenuState extends MusicBeatState
 					});
 				}
 			}
-			//#if mobile
-			else if (FlxG.keys.justPressed.SEVEN || key_editors.justPressed)
+			else if (FlxG.keys.justPressed.SEVEN || keyeditors.justPressed)
 			{
 				selectedSomethin = true;
 				MusicBeatState.switchState(new MasterEditorMenu());
 			}
-			//#end
 		}
 
 		super.update(elapsed);

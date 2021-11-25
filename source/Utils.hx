@@ -1,4 +1,4 @@
-package utils;
+package;
 
 import openfl.utils.AssetType;
 import haxe.crypto.Md5;

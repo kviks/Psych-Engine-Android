@@ -60,7 +60,9 @@ class OptionsState extends MusicBeatState
 		}
 		changeSelection();
 
+		#if mobileC
 		addVirtualPad(FULL, A_B);
+		#end
 
 		super.create();
 	}
@@ -81,7 +83,7 @@ class OptionsState extends MusicBeatState
 			changeSelection(1);
 		}
 
-		if (controls.BACK) {
+		if (controls.BACK || FlxG.android.justReleased.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
 		}
@@ -181,6 +183,11 @@ class NotesSubstate extends MusicBeatSubstate
 		}
 		hsvText = new Alphabet(0, 0, "Hue    Saturation  Brightness", false, false, 0, 0.65);
 		add(hsvText);
+
+		#if mobileC
+		addVirtualPad(FULL, A_B);
+		#end
+
 		changeSelection();
 	}
 
@@ -463,6 +470,10 @@ class ControlsSubstate extends MusicBeatSubstate {
 			}
 		}
 		changeSelection();
+
+		#if mobileC
+		addVirtualPad(FULL, A_B);
+		#end
 	}
 
 	var leaving:Bool = false;
@@ -817,6 +828,10 @@ class PreferencesSubstate extends MusicBeatSubstate
 		}
 		changeSelection();
 		reloadValues();
+
+		#if mobileC
+		addVirtualPad(FULL, A_B);
+		#end
 	}
 
 	var nextAccept:Int = 5;

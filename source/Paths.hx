@@ -303,7 +303,6 @@ class Paths
 		return path.toLowerCase().replace(' ', '-');
 	}
 	
-	#if dontUseManifest
 	static public function addCustomGraphic(key:String):FlxGraphic {
 		if(FileSystem.exists(modsImages(key))) {
 			if(!customImagesLoaded.exists(key)) {
@@ -363,5 +362,4 @@ class Paths
 		}
 		return 'mods/' + key;
 	}
-	#end
 }

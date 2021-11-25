@@ -1,6 +1,6 @@
 package;
 
-#if dontUseManifest
+#if !android
 import sys.io.File;
 import sys.FileSystem;
 #else
@@ -64,7 +64,7 @@ class StageData {
 		var rawJson:String = null;
 		var path:String = Paths.getPreloadPath('stages/' + stage + '.json');
 
-		#if dontUseManifest
+		#if !android
 		var modPath:String = Paths.modFolders('stages/' + stage + '.json');
 		if(FileSystem.exists(modPath)) {
 			rawJson = File.getContent(modPath);
