@@ -1,6 +1,8 @@
 package;
 
-#if !android
+import openfl.utils.Assets;
+import openfl.Assets;
+#if dontUseManifest
 import sys.io.File;
 import sys.FileSystem;
 #else
@@ -67,9 +69,9 @@ class StageData {
 		#if !android
 		var modPath:String = Paths.modFolders('stages/' + stage + '.json');
 		if(FileSystem.exists(modPath)) {
-			rawJson = File.getContent(modPath);
+			rawJson = Assets.getText(modPath);
 		} else if(FileSystem.exists(path)) {
-			rawJson = File.getContent(path);
+			rawJson = Assets.getText(path);
 		}
 		#else
 		if(Assets.exists(path)) {

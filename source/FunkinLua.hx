@@ -27,6 +27,7 @@ import sys.io.File;
 import Type.ValueType;
 import Controls;
 import DialogueBoxPsych;
+import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
@@ -557,7 +558,7 @@ class FunkinLua {
 			lePlayState.addCharacterToList(name, charType);
 		});
 		Lua_helper.add_callback(lua, "precacheImage", function(name:String) {
-			Paths.addCustomGraphic(name);
+			//Paths.addCustomGraphic(name);
 		});
 		Lua_helper.add_callback(lua, "precacheSound", function(name:String) {
 			CoolUtil.precacheSound(name);
@@ -879,10 +880,10 @@ class FunkinLua {
 			return false;
 		});
 		Lua_helper.add_callback(lua, "startDialogue", function(dialogueFile:String, music:String = null) {
-			var path:String = Paths.modsJson(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
+			var path:String = Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
 			luaTrace('Trying to load dialogue: ' + path);
 
-			if(FileSystem.exists(path)) {
+			if(openfl.Assets.exists(path)) {
 				var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
 				if(shit.dialogue.length > 0) {
 					lePlayState.startDialogue(shit, music);
@@ -901,15 +902,21 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String) {
 			#if VIDEOS_ALLOWED
-			if(FileSystem.exists(Paths.modsVideo(videoFile))) {
+			if(OpenFlAssets.exists(Paths.video(videoFile))) 
+			{
 				lePlayState.startVideo(videoFile);
-			} else {
+			} 
+			else 
+			{
 				luaTrace('Video file not found: ' + videoFile);
 			}
 			#else
-			if(lePlayState.endingSong) {
+			if(lePlayState.endingSong) 
+			{
 				lePlayState.endSong();
-			} else {
+			} 
+			else 
+			{
 				lePlayState.startCountdown();
 			}
 			#end

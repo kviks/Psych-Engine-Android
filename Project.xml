@@ -29,9 +29,6 @@
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false"/>
 
-	<define name="mobileC" if="mobile" />
-	<assets path="assets/shared/images/hitbox"/>
-
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
@@ -47,10 +44,11 @@
 	<assets path="assets/preload" rename="assets" exclude="*.mp3"  unless="web"/>
 	
 	<!-- PSYCH ENGINE CUSTOMIZATION -->
-	<define name="MODS_ALLOWED" />
-	<define name="LUA_ALLOWED" if="windows" />
+	<define name="MODS_ALLOWED" if="desktop || android" />
+	<define name="LUA_ALLOWED" if="windows || android" />
 	<define name="ACHIEVEMENTS_ALLOWED" />
-	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits"/>
+	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits" />
+	<define name="mobileC" if="mobile" />
 
 	<!-- DONT ENABLE THIS -->
 	<define name="CHECK_FOR_UPDATES" if="desktop officialBuild"/>
@@ -58,7 +56,7 @@
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
-	
+	<library name="videos"        preload="true"/>
 	<section if="PRELOAD_ALL">
 		<library name="songs"         preload="true" />
 		<library name="shared"        preload="true" />
@@ -82,7 +80,8 @@
 		<library name="week5"         preload="false" />
 		<library name="week6"         preload="false" />
 	</section>
-
+	
+	<assets path="assets/videos"        library="videos"/>
 	<assets path="assets/songs"         library="songs"         exclude="*.ogg" if="web"/>
 	<assets path="assets/songs"         library="songs"         exclude="*.mp3" unless="web"/>
 	<assets path="assets/shared"        library="shared"        exclude="*.ogg" if="web"/>
@@ -102,11 +101,12 @@
 	<assets path="assets/week6"         library="week6"         exclude="*.ogg" if="web"/>
 	<assets path="assets/week6"         library="week6"         exclude="*.mp3" unless="web"/>
 	
-	<assets path='example_mods' rename='mods' embed='false' if="MODS_ALLOWED"/>
+	<assets path="assets/shared/images/hitbox" if="mobileC" />
+	<assets path='example_mods' rename='mods' embed='false' if="MODS_ALLOWED" />
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<!-- <template path='mods' /> -->
 	
-	<!-- assets path="CHANGELOG.md" rename='changelog.txt' --/>
+	<!-- assets path="CHANGELOG.md" rename='changelog.txt' -->
 
 	<!-- NOTE FOR FUTURE SELF SINCE FONTS ARE ALWAYS FUCKY 
 		TO FIX ONE OF THEM, I CONVERTED IT TO OTF. DUNNO IF YOU NEED TO
@@ -114,7 +114,6 @@
 		NOT USING A DIRECT THING TO THE ASSET!!!
 	-->
 	<assets path="assets/fonts" embed='true'/>
-	
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
@@ -124,12 +123,17 @@
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript" />
 
+	<!-- Extension Webm -->
+	<haxelib name="actuate" />
+	<haxelib name="extension-webview"/>
+
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
+	<haxelib name="linc_luajit" />
 	<haxelib name="faxe" if='switch'/>
-	<!--<haxelib name="polymod"/> -->
 	<haxelib name="discord_rpc" if="desktop"/>
+	<haxelib name="hxvm-luajit"/>
+
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
 	<!-- <haxelib name="markdown" /> -->
@@ -139,6 +143,8 @@
 	<!--<haxelib name="nape-haxe4" />-->
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
+
+	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB" />
 
 	<!--Enable the Flixel core recording system-->
 	<!--<haxedef name="FLX_RECORD" />-->

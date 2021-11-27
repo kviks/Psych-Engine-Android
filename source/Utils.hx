@@ -11,7 +11,7 @@ import sys.io.File;
 class Utils
 {
     #if android
-    static var storagePath:String = lime.system.System.applicationStorageDirectory;
+    public static var storagePath:String = lime.system.System.applicationStorageDirectory;
     
     /*
     WARNING

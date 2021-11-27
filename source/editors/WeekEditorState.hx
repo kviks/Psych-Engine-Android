@@ -38,7 +38,7 @@ using StringTools;
 
 class WeekEditorState extends MusicBeatState
 {
-	var _pad:FlxVirtualPad;
+	// var _pad:FlxVirtualPad;
 
 	var txtWeekTitle:FlxText;
 	var bgSprite:FlxSprite;
@@ -118,9 +118,9 @@ class WeekEditorState extends MusicBeatState
 
 		FlxG.mouse.visible = true;
 
-		_pad = new FlxVirtualPad(FULL, NONE);
-    	_pad.alpha = 0.75;
-    	this.add(_pad);
+		// _pad = new FlxVirtualPad(FULL, NONE);
+  //   	_pad.alpha = 0.75;
+  //   	this.add(_pad);
 
 		super.create();
 	}
@@ -625,6 +625,11 @@ class WeekEditorFreeplayState extends MusicBeatState
 
 		addEditorBox();
 		changeSelection();
+
+		#if mobileC
+		addVirtualPad(UP_DOWN, A);
+		#end
+
 		super.create();
 	}
 	
@@ -808,7 +813,7 @@ class WeekEditorFreeplayState extends MusicBeatState
 			FlxG.sound.muteKeys = TitleState.muteKeys;
 			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
 			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
-			if(FlxG.keys.justPressed.ESCAPE) {
+			if(FlxG.keys.justPressed.ESCAPE || controls.ACCEPT) {
 				FlxG.mouse.visible = false;
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));

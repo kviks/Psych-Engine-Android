@@ -1,0 +1,11 @@
+{
+	"dialogue": [
+		{
+			"expression": "talk",
+			"text": "kek?",
+			"boxState": "normal",
+			"speed": 0.05,
+			"portrait": "bf"
+		}
+	]
+}

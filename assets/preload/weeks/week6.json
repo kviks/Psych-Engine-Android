@@ -1,8 +1,8 @@
 {
 	"songs": [
-		["Senpai", "senpai-pixel", [255, 120, 191]],
-		["Roses", "senpai-pixel", [255, 120, 191]],
-		["Thorns", "spirit-pixel", [255, 120, 191]]
+		["Senpai", "senpai-pixel", [255, 120, 191], "Senpai"],
+		["Roses", "senpai-pixel", [255, 120, 191], "Roses"],
+		["Thorns", "spirit-pixel", [255, 120, 191], "Thorns"]
 	],
 
 	"weekCharacters": [
@@ -18,5 +18,7 @@
 	"startUnlocked": true,
 
 	"hideStoryMode": false,
-	"hideFreeplay": false
+	"hideFreeplay": false,
+	"showcutscene": false,
+	"currentcutscene": "template"
 }

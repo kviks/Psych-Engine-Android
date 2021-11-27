@@ -51,8 +51,16 @@ class TitleState extends MusicBeatState
 
 	var wackyImage:FlxSprite;
 	var easterEggEnabled:Bool = true; //Disable this to hide the easter egg
+//	#if desktop
 	var easterEggKeyCombination:Array<FlxKey> = [FlxKey.B, FlxKey.B]; //bb stands for bbpanzu cuz he wanted this lmao
+//	#else // android
+//	var easterEggKeyCombination:Array<controls> = [controls.BACK, controls.BACK]; //backback stands for bbpanzu cuz he wanted this lmao
+//	#end
+//	#if desktop
 	var lastKeysPressed:Array<FlxKey> = [];
+//	#else  // android
+	//var lastKeysPressed:Array<controls> = [];
+	//#end
 
 	var mustUpdate:Bool = false;
 	public static var updateVersion:String = '';

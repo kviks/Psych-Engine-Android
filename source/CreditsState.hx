@@ -25,8 +25,7 @@ class CreditsState extends MusicBeatState
 
 	private static var creditsStuff:Array<Dynamic> = [ //Name - Icon name - Description - Link - BG Color
 		['Psych Engine Android by'],
-		['Kviks',				'kviks',			'real sus guy',										'https://youtube.com/channel/UChPjrBq7z7oSVcB3FcHMDCA',	0xFFF73838],
-		['LuckyDog7', 			'luckydog', 		'sussy',											'https://youtube.com/channel/UCeHXKGpDKo2eqYKVkqCUdaA', 0xFFFFFFFF],
+		['Kviks',				'kviks',			'Main Programmer of Psych Engine Android',			'https://youtube.com/channel/UChPjrBq7z7oSVcB3FcHMDCA',	0xFFF73838],
 		[''],
 		['Psych Engine Team'],
 		['Shadow Mario',		'shadowmario',		'Main Programmer of Psych Engine',					'https://twitter.com/Shadow_Mario_',	0xFFFFDD33],
@@ -100,7 +99,9 @@ class CreditsState extends MusicBeatState
 		intendedColor = bg.color;
 		changeSelection();
 
+		#if mobileC
 		addVirtualPad(FULL, A_B);
+		#end
 
 		super.create();
 	}

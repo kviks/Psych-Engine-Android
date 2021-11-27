@@ -24,6 +24,7 @@ typedef CharacterFile = {
 	var sing_duration:Float;
 	var healthicon:String;
 
+	
 	var position:Array<Float>;
 	var camera_position:Array<Float>;
 
@@ -65,6 +66,8 @@ class Character extends FlxSprite
 	public var positionArray:Array<Float> = [0, 0];
 	public var cameraPosition:Array<Float> = [0, 0];
 
+	public var hasMissAnimations:Bool = false;
+
 	//Used on Character Editor
 	public var imageFile:String = '';
 	public var jsonScale:Float = 1;
@@ -94,7 +97,7 @@ class Character extends FlxSprite
 
 			default:
 				var characterPath:String = 'characters/' + curCharacter + '.json';
-				#if dontUseManifest
+				#if desktop
 				var path:String = Paths.modFolders(characterPath);
 				if (!FileSystem.exists(path)) {
 					path = Paths.getPreloadPath(characterPath);
@@ -109,7 +112,7 @@ class Character extends FlxSprite
 					path = Paths.getPreloadPath('characters/' + DEFAULT_CHARACTER + '.json'); //If a character couldn't be found, change him to BF just to prevent a crash
 				}
 
-				#if dontUseManifest
+				#if desktop
 				var rawJson = File.getContent(path);
 				#else
 				var rawJson = Assets.getText(path);
@@ -170,6 +173,8 @@ class Character extends FlxSprite
 				//trace('Loaded file to character ' + curCharacter);
 		}
 		originalFlipX = flipX;
+
+		if(animOffsets.exists('singLEFTmiss') || animOffsets.exists('singDOWNmiss') || animOffsets.exists('singUPmiss') || animOffsets.exists('singRIGHTmiss')) hasMissAnimations = true;
 
 		recalculateDanceIdle();
 		dance();

@@ -1,6 +1,6 @@
 package;
 
-#if !android
+#if MODS_ALLOWED
 import sys.io.File;
 import sys.FileSystem;
 #end
@@ -24,6 +24,8 @@ typedef WeekFile =
 	var startUnlocked:Bool;
 	var hideStoryMode:Bool;
 	var hideFreeplay:Bool;
+	var showcutscene:Bool;
+	var currentcutscene:String;
 }
 
 class WeekData {
@@ -42,10 +44,12 @@ class WeekData {
 	public var startUnlocked:Bool;
 	public var hideStoryMode:Bool;
 	public var hideFreeplay:Bool;
+	public var showcutscene:Bool;
+	public var currentcutscene:String;
 
 	public static function createWeekFile():WeekFile {
 		var weekFile:WeekFile = {
-			songs: [["Bopeebo", "dad", [146, 113, 253]], ["Fresh", "dad", [146, 113, 253]], ["Dad Battle", "dad", [146, 113, 253]]],
+			songs: [["Bopeebo", "dad", [146, 113, 253], "Bopeebo"], ["Fresh", "dad", [146, 113, 253], "Fresh"], ["Dad Battle", "dad", [146, 113, 253], "Dad Battle"]], //Yeah, aparentemente o negocio tem que ser mais bonitin, MERDA!!!
 			weekCharacters: ['dad', 'bf', 'gf'],
 			weekBackground: 'stage',
 			weekBefore: 'tutorial',
@@ -54,7 +58,9 @@ class WeekData {
 			freeplayColor: [146, 113, 253],
 			startUnlocked: true,
 			hideStoryMode: false,
-			hideFreeplay: false
+			hideFreeplay: false,
+			showcutscene: false,
+			currentcutscene: 'template'
 		};
 		return weekFile;
 	}
@@ -71,103 +77,54 @@ class WeekData {
 		startUnlocked = weekFile.startUnlocked;
 		hideStoryMode = weekFile.hideStoryMode;
 		hideFreeplay = weekFile.hideFreeplay;
+		showcutscene = weekFile.showcutscene;
+		currentcutscene = weekFile.currentcutscene;
 	}
 
 	public static function reloadWeekFiles(isStoryMode:Null<Bool> = false)
-	{
-		weeksList = [];
-		weeksLoaded.clear();
-		#if !android
-		var directories:Array<String> = [Paths.mods(), Paths.getPreloadPath()];
-		var originalLength:Int = directories.length;
-		if(FileSystem.exists(Paths.mods())) {
-			for (folder in FileSystem.readDirectory(Paths.mods())) {
-				var path = haxe.io.Path.join([Paths.mods(), folder]);
-				if (sys.FileSystem.isDirectory(path) && !Paths.ignoreModFolders.exists(folder)) {
-					directories.push(path + '/');
-					//trace('pushed Directory: ' + folder);
-				}
-			}
-		}
-		#else
-		var directories:Array<String> = [Paths.getPreloadPath()];
-		var originalLength:Int = directories.length;
-		#end
-
-		var sexList:Array<String> = CoolUtil.coolTextFile(Paths.getPreloadPath('weeks/weekList.txt'));
-		for (i in 0...sexList.length) {
-			for (j in 0...directories.length) {
-				var fileToCheck:String = directories[j] + 'weeks/' + sexList[i] + '.json';
-				if(!weeksLoaded.exists(sexList[i])) {
-					var week:WeekFile = getWeekFile(fileToCheck);
-					if(week != null) {
-						var weekFile:WeekData = new WeekData(week);
-
-						#if !android
-						if(j >= originalLength) {
-							weekFile.folder = directories[j].substring(Paths.mods().length, directories[j].length-1);
-						}
-						#end
-
-						if(weekFile != null && (isStoryMode == null || (isStoryMode && !weekFile.hideStoryMode) || (!isStoryMode && !weekFile.hideFreeplay))) {
-							weeksLoaded.set(sexList[i], weekFile);
-							weeksList.push(sexList[i]);
-						}
-					}
-				}
-			}
-		}
-
-		#if !android
-		for (i in 0...directories.length) {
-			var directory:String = directories[i] + 'weeks/';
-			if(FileSystem.exists(directory)) {
-				for (file in FileSystem.readDirectory(directory)) {
-					var path = haxe.io.Path.join([directory, file]);
-					if (!sys.FileSystem.isDirectory(path) && file.endsWith('.json')) {
-						var weekToCheck:String = file.substr(0, file.length - 5);
-						if(!weeksLoaded.exists(weekToCheck)) {
-							var week:WeekFile = getWeekFile(path);
-							if(week != null) {
-								var weekFile:WeekData = new WeekData(week);
-								if(i >= originalLength) {
-									weekFile.folder = directories[i].substring(Paths.mods().length, directories[i].length-1);
-								}
-
-								if((isStoryMode && !weekFile.hideStoryMode) || (!isStoryMode && !weekFile.hideFreeplay)) {
-									weeksLoaded.set(weekToCheck, weekFile);
-									weeksList.push(weekToCheck);
-								}
+		{
+			weeksList = [];
+			weeksLoaded.clear();
+			var directories:Array<String> = [Paths.getPreloadPath()];
+			var originalLength:Int = directories.length;
+	
+			var sexList:Array<String> = CoolUtil.coolTextFile(Paths.getPreloadPath('weeks/weekList.txt'));
+			for (i in 0...sexList.length) {
+				for (j in 0...directories.length) {
+					var fileToCheck:String = directories[j] + 'weeks/' + sexList[i] + '.json';
+					if(!weeksLoaded.exists(sexList[i])) {
+						var week:WeekFile = getWeekFile(fileToCheck);
+						if(week != null) {
+							var weekFile:WeekData = new WeekData(week);
+	
+	
+							if(weekFile != null && (isStoryMode == null || (isStoryMode && !weekFile.hideStoryMode) || (!isStoryMode && !weekFile.hideFreeplay))) {
+								weeksLoaded.set(sexList[i], weekFile);
+								weeksList.push(sexList[i]);
 							}
 						}
 					}
 				}
 			}
-		}
-		#end
-	}
+	
 
-	private static function getWeekFile(path:String):WeekFile {
-		var rawJson:String = null;
-		#if !android
-		if(FileSystem.exists(path)) {
-			rawJson = File.getContent(path);
 		}
-		#else
-		if(OpenFlAssets.exists(path)) {
-			rawJson = Assets.getText(path);
+	
+		private static function getWeekFile(path:String):WeekFile {
+			var rawJson:String = null;
+			if(OpenFlAssets.exists(path)) {
+				rawJson = Assets.getText(path);
+			}
+	
+			if(rawJson != null && rawJson.length > 0) {
+				return cast Json.parse(rawJson);
+			}
+			return null;
 		}
-		#end
-
-		if(rawJson != null && rawJson.length > 0) {
-			return cast Json.parse(rawJson);
-		}
-		return null;
-	}
-
-	//   FUNCTIONS YOU WILL PROBABLY NEVER NEED TO USE
-
-	//To use on PlayState.hx or Highscore stuff
+	
+		//   FUNCTIONS YOU WILL PROBABLY NEVER NEED TO USE
+	
+		//To use on PlayState.hx or Highscore stuff
 	public static function getWeekFileName():String {
 		return weeksList[PlayState.storyWeek];
 	}

@@ -179,7 +179,9 @@ class StoryMenuState extends MusicBeatState
 
 		changeWeek();
 
+		#if mobileC
 		addVirtualPad(FULL, A_B);
+		#end
 
 		super.create();
 	}
@@ -243,7 +245,7 @@ class StoryMenuState extends MusicBeatState
 			}
 		}
 
-		if (controls.BACK || FlxG.android.justReleased.BACK && !movedBack && !selectedWeek)
+		if (controls.BACK && !movedBack && !selectedWeek)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
@@ -296,10 +298,19 @@ class StoryMenuState extends MusicBeatState
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
 			PlayState.campaignMisses = 0;
+			var thisWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[curWeek]);
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
-				LoadingState.loadAndSwitchState(new PlayState(), true);
-				FreeplayState.destroyFreeplayVocals();
+				if(thisWeek.showcutscene && !ClientPrefs.cutscene)
+				{
+					FreeplayState.destroyFreeplayVocals();
+					LoadingState.loadAndSwitchState(new VideoState('assets/videos/' + thisWeek.currentcutscene, new PlayState()));
+				}
+				else
+				{
+					FreeplayState.destroyFreeplayVocals();
+					LoadingState.loadAndSwitchState(new PlayState(), true);
+				}
 			});
 		} else {
 			FlxG.sound.play(Paths.sound('cancelMenu'));

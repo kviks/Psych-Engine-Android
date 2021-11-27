@@ -1,5 +1,7 @@
 package editors;
 
+import flixel.FlxCamera;
+import ui.Mobilecontrols;
 import Section.SwagSection;
 import Song.SwagSong;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -30,6 +32,10 @@ class EditorPlayState extends MusicBeatState
 	public var playerStrums:FlxTypedGroup<StrumNote>;
 	public var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
+	#if mobileC
+	var mcontrols:Mobilecontrols; 
+	#end
+
 	public var notes:FlxTypedGroup<Note>;
 	public var unspawnNotes:Array<Note> = [];
 
@@ -49,6 +55,9 @@ class EditorPlayState extends MusicBeatState
 	}
 
 	var scoreTxt:FlxText;
+	var stepTxt:FlxText;
+	var beatTxt:FlxText;
+	
 	var timerToStart:Float = 0;
 	private var noteTypeMap:Map<String, Bool> = new Map<String, Bool>();
 	override function create()
@@ -112,13 +121,47 @@ class EditorPlayState extends MusicBeatState
 		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.hideHud;
 		add(scoreTxt);
+		
+		beatTxt = new FlxText(10, 610, FlxG.width, "Beat: 0", 20);
+		beatTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		beatTxt.scrollFactor.set();
+		beatTxt.borderSize = 1.25;
+		add(beatTxt);
 
-		var tipText:FlxText = new FlxText(10, FlxG.height - 24, 0, 'Press ESC to Go Back to Chart Editor', 16);
+		stepTxt = new FlxText(10, 640, FlxG.width, "Step: 0", 20);
+		stepTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		stepTxt.scrollFactor.set();
+		stepTxt.borderSize = 1.25;
+		add(stepTxt);
+
+		var tipText:FlxText = new FlxText(10, FlxG.height - 24, 0, 'Release BACK to Go Back to Chart Editor', 16);
 		tipText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		tipText.borderSize = 2;
 		tipText.scrollFactor.set();
 		add(tipText);
 		FlxG.mouse.visible = false;
+
+		#if mobileC
+		mcontrols = new Mobilecontrols();
+		switch (mcontrols.mode)
+		{
+			case VIRTUALPAD_RIGHT | VIRTUALPAD_LEFT | VIRTUALPAD_CUSTOM:
+				controls.setVirtualPad(mcontrols._virtualPad, FULL, NONE);
+			case HITBOX:
+				controls.setHitBox(mcontrols._hitbox);
+			default:
+		}
+		trackedinputs = controls.trackedinputs;
+		controls.trackedinputs = [];
+		var camcontrol = new FlxCamera();
+		FlxG.cameras.add(camcontrol);
+		camcontrol.bgColor.alpha = 0;
+		mcontrols.cameras = [camcontrol];
+
+		mcontrols.visible = false;
+
+		add(mcontrols);
+	#end
 
 		//sayGo();
 		super.create();
@@ -245,6 +288,11 @@ class EditorPlayState extends MusicBeatState
 
 	function startSong():Void
 	{
+
+		#if mobileC
+		mcontrols.visible = true;
+		#end
+
 		startingSong = false;
 		FlxG.sound.music.time = startPos;
 		FlxG.sound.music.play();
@@ -264,7 +312,7 @@ class EditorPlayState extends MusicBeatState
 	}
 
 	override function update(elapsed:Float) {
-		if (FlxG.keys.justPressed.ESCAPE)
+		if (FlxG.keys.justPressed.ESCAPE || FlxG.android.justReleased.BACK)
 		{
 			FlxG.sound.music.pause();
 			vocals.pause();
@@ -442,6 +490,8 @@ class EditorPlayState extends MusicBeatState
 
 		keyShit();
 		scoreTxt.text = 'Hits: ' + songHits + ' | Misses: ' + songMisses;
+		beatTxt.text = 'Beat: ' + curBeat;
+		stepTxt.text = 'Step: ' + curStep;
 		super.update(elapsed);
 	}
 
@@ -476,24 +526,24 @@ class EditorPlayState extends MusicBeatState
 
 	function keyShit() {
 		// HOLDING
-		var up = controls.NOTE_UP;
-		var right = controls.NOTE_RIGHT;
-		var down = controls.NOTE_DOWN;
-		var left = controls.NOTE_LEFT;
+		var up = controls.UI_UP;
+		var right = controls.UI_RIGHT;
+		var down = controls.UI_DOWN;
+		var left = controls.UI_LEFT;
 
-		var upP = controls.NOTE_UP_P;
-		var rightP = controls.NOTE_RIGHT_P;
-		var downP = controls.NOTE_DOWN_P;
-		var leftP = controls.NOTE_LEFT_P;
+		var upP = controls.UI_UP_P;
+		var rightP = controls.UI_RIGHT_P;
+		var downP = controls.UI_DOWN_P;
+		var leftP = controls.UI_LEFT_P;
 
-		var upR = controls.NOTE_UP_R;
-		var rightR = controls.NOTE_RIGHT_R;
-		var downR = controls.NOTE_DOWN_R;
-		var leftR = controls.NOTE_LEFT_R;
+		var upR = controls.UI_UP_R;
+		var rightR = controls.UI_RIGHT_R;
+		var downR = controls.UI_DOWN_R;
+		var leftR = controls.UI_LEFT_R;
 
 		var controlArray:Array<Bool> = [leftP, downP, upP, rightP];
 		var controlReleaseArray:Array<Bool> = [leftR, downR, upR, rightR];
-		var controlHoldArray:Array<Bool> = [left, down, up, right];
+		var controlHoldArray:Array<Bool> = [left, down, up, right];		
 
 		// FlxG.watch.addQuick('asdfa', upP);
 		if (generatedMusic)
@@ -777,8 +827,8 @@ class EditorPlayState extends MusicBeatState
 			daLoop++;
 		}
 		/* 
-			trace(combo);
-			trace(seperatedScore);
+			//trace(combo);
+			//trace(seperatedScore);
 			*/
 
 		coolText.text = Std.string(seperatedScore);

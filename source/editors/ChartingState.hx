@@ -1,5 +1,6 @@
 package editors;
 
+import flixel.addons.ui.FlxUIButton;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -79,7 +80,11 @@ class ChartingState extends MusicBeatState
 		['Camera Follow Pos', "Value 1: X\nValue 2: Y\n\nThe camera won't change the follow point\nafter using this, for getting it back\nto normal, leave both values blank."],
 		['Alt Idle Animation', "Sets a speciied suffix after the idle animation name.\nYou can use this to trigger 'idle-alt' if you set\nValue 2 to -alt\n\nValue 1: Character to set (Dad, BF or GF)\nValue 2: New suffix (Leave it blank to disable)"],
 		['Screen Shake', "Value 1: Camera shake\nValue 2: HUD shake\n\nEvery value works as the following example: \"1, 0.05\".\nThe first number (1) is the duration.\nThe second number (0.05) is the intensity."],
-		['Change Character', "Value 1: Character to change (Dad, BF, GF)\nValue 2: New character's name"]
+		['Change Character', "Value 1: Character to change (Dad, BF, GF)\nValue 2: New character's name"],
+		['Opponent Anim', "Value 1: Character to change (dad, gf)\nValue 2: Camera position (1 = normal, 2 = gf)"],
+		['Super Fade', "Value 1: Opacity"],
+		['Super Flash', "Value 1: Flash duration"],
+		['Zoom Amount', "Value 1: Changes the \"defaultCamZoom\""]
 	];
 
 	var _file:FileReference;
@@ -141,7 +146,7 @@ class ChartingState extends MusicBeatState
 	var zoomTxt:FlxText;
 	var curZoom:Int = 1;
 
-	#if !html5
+	#if !android
 	var zoomList:Array<Float> = [
 		0.5,
 		1,
@@ -338,7 +343,7 @@ class ChartingState extends MusicBeatState
         key_space.alpha = 0.75;
         add(key_space);
 
-		_pad = new FlxVirtualPad(FULL, NONE);
+		_pad = new FlxVirtualPad(FULL, A);
     	_pad.alpha = 0.75;
     	this.add(_pad);
 
@@ -364,7 +369,7 @@ class ChartingState extends MusicBeatState
 		check_voices.callback = function()
 		{
 			_song.needsVoices = check_voices.checked;
-			trace('CHECKED!');
+			//trace('CHECKED!');
 		};
 
 		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
@@ -395,7 +400,7 @@ class ChartingState extends MusicBeatState
 		{
 			var songName:String = Paths.formatToSongPath(_song.song);
 			var file:String = Paths.json(songName + '/events');
-			#if dontUseManifest
+			#if desktop
 			if (#if MODS_ALLOWED FileSystem.exists(Paths.modsJson(songName + '/events')) || #end FileSystem.exists(file))
 			#else
 			if (OpenFlAssets.exists(file))
@@ -448,7 +453,7 @@ class ChartingState extends MusicBeatState
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
 
-		#if dontUseManifest
+		#if !android
 		var directories:Array<String> = [Paths.mods('characters/'), Paths.mods(Paths.currentModDirectory + '/characters/'), Paths.getPreloadPath('characters/')];
 		#else
 		var directories:Array<String> = [Paths.getPreloadPath('characters/')];
@@ -460,7 +465,7 @@ class ChartingState extends MusicBeatState
 			tempMap.set(characters[i], true);
 		}
 
-		#if MODS_ALLOWED
+		#if android
 		for (i in 0...directories.length) {
 			var directory:String = directories[i];
 			if(FileSystem.exists(directory)) {
@@ -502,7 +507,7 @@ class ChartingState extends MusicBeatState
 		player2DropDown.selectedLabel = _song.player2;
 		blockPressWhileScrolling.push(player2DropDown);
 
-		#if dontUseManifest
+		#if !android
 		var directories:Array<String> = [Paths.mods('stages/'), Paths.mods(Paths.currentModDirectory + '/stages/'), Paths.getPreloadPath('stages/')];
 		#else
 		var directories:Array<String> = [Paths.getPreloadPath('stages/')];
@@ -518,7 +523,7 @@ class ChartingState extends MusicBeatState
 			}
 			tempMap.set(stageToCheck, true);
 		}
-		#if MODS_ALLOWED
+		#if android
 		for (i in 0...directories.length) {
 			var directory:String = directories[i];
 			if(FileSystem.exists(directory)) {
@@ -598,6 +603,7 @@ class ChartingState extends MusicBeatState
 
 	var stepperLength:FlxUINumericStepper;
 	var check_mustHitSection:FlxUICheckBox;
+	var check_gfSection:FlxUICheckBox;
 	var check_changeBPM:FlxUICheckBox;
 	var stepperSectionBPM:FlxUINumericStepper;
 	var check_altAnim:FlxUICheckBox;
@@ -617,6 +623,10 @@ class ChartingState extends MusicBeatState
 		check_mustHitSection = new FlxUICheckBox(10, 30, null, null, "Must hit section", 100);
 		check_mustHitSection.name = 'check_mustHit';
 		check_mustHitSection.checked = _song.notes[curSection].mustHitSection;
+
+		check_gfSection = new FlxUICheckBox(130, 30, null, null, "GF section", 100);
+		check_gfSection.name = 'check_gf';
+		check_gfSection.checked = _song.notes[curSection].gfSection;
 		// _song.needsVoices = check_mustHit.checked;
 
 		check_altAnim = new FlxUICheckBox(10, 60, null, null, "Alt Animation", 100);
@@ -650,7 +660,7 @@ class ChartingState extends MusicBeatState
 		var pasteButton:FlxButton = new FlxButton(10, 180, "Paste Section", function()
 		{
 			var addToTime:Float = Conductor.stepCrochet * (_song.notes[curSection].lengthInSteps * (curSection - sectionToCopy));
-			trace('Time to add: ' + addToTime);
+			//trace('Time to add: ' + addToTime);
 
 			for (note in notesCopied)
 			{
@@ -709,6 +719,7 @@ class ChartingState extends MusicBeatState
 		tab_group_section.add(stepperLength);
 		tab_group_section.add(stepperSectionBPM);
 		tab_group_section.add(check_mustHitSection);
+		tab_group_section.add(check_gfSection);
 		tab_group_section.add(check_altAnim);
 		tab_group_section.add(check_changeBPM);
 		tab_group_section.add(copyButton);
@@ -813,7 +824,7 @@ class ChartingState extends MusicBeatState
 						var fileToCheck:String = file.substr(0, file.length - 4);
 						if(!eventPushedMap.exists(fileToCheck)) {
 							eventPushedMap.set(fileToCheck, true);
-							eventStuff.push([fileToCheck, File.getContent(path)]);
+							eventStuff.push([fileToCheck, OpenFlAssets.getText(path)]);
 						}
 					}
 				}
@@ -1032,6 +1043,12 @@ class ChartingState extends MusicBeatState
 					updateGrid();
 					updateHeads();
 
+				case 'GF section':
+					_song.notes[curSection].gfSection = check.checked;
+
+					updateGrid();
+					updateHeads();
+
 				case 'Change BPM':
 					_song.notes[curSection].changeBPM = check.checked;
 					FlxG.log.add('changed bpm shit');
@@ -1157,9 +1174,9 @@ class ChartingState extends MusicBeatState
 		if(!disableAutoScrolling.checked) {
 			if (strumLine.y > (gridBG.height / 2))
 			{
-				trace(curStep);
-				trace((_song.notes[curSection].lengthInSteps) * (curSection + 1));
-				trace('DUMBSHIT');
+				//trace(curStep);
+				//trace((_song.notes[curSection].lengthInSteps) * (curSection + 1));
+				//trace('DUMBSHIT');
 
 				if (_song.notes[curSection + 1] == null)
 				{
@@ -1189,7 +1206,7 @@ class ChartingState extends MusicBeatState
 						}
 						else
 						{
-							trace('tryin to delete note...');
+							//trace('tryin to delete note...');
 							deleteNote(note);
 						}
 					}
@@ -1244,7 +1261,7 @@ class ChartingState extends MusicBeatState
 
 		if (!blockInput)
 		{
-			if (FlxG.keys.justPressed.ESCAPE)
+			if (FlxG.keys.justPressed.ESCAPE#if mobileC || _pad.buttonA.justPressed#end)
 			{
 				autosaveSong();
 				LoadingState.loadAndSwitchState(new editors.EditorPlayState(sectionStartTime()));
@@ -1459,7 +1476,7 @@ class ChartingState extends MusicBeatState
 			audioBuffers[0].dispose();
 		}
 		audioBuffers[0] = null;
-		#if dontUseManifest
+		#if !android
 		if(FileSystem.exists(Paths.modFolders('songs/' + currentSongName + '/Inst.ogg'))) {
 			audioBuffers[0] = AudioBuffer.fromFile(Paths.modFolders('songs/' + currentSongName + '/Inst.ogg'));
 			//trace('Custom vocals found');
@@ -1470,15 +1487,12 @@ class ChartingState extends MusicBeatState
 				audioBuffers[0] = AudioBuffer.fromFile('./' + leVocals.substr(6));
 				//trace('Inst found');
 			}
-		#if dontUseManifest
-		}
-		#end
 
 		if(audioBuffers[1] != null) {
 			audioBuffers[1].dispose();
 		}
 		audioBuffers[1] = null;
-		#if dontUseManifest
+		#if !android
 		if(FileSystem.exists(Paths.modFolders('songs/' + currentSongName + '/Voices.ogg'))) {
 			audioBuffers[1] = AudioBuffer.fromFile(Paths.modFolders('songs/' + currentSongName + '/Voices.ogg'));
 			//trace('Custom vocals found');
@@ -1488,7 +1502,7 @@ class ChartingState extends MusicBeatState
 				audioBuffers[1] = AudioBuffer.fromFile('./' + leVocals.substr(6));
 				//trace('Voices found, LETS FUCKING GOOOO');
 			}
-		#if dontUseManifest
+		#if !android
 		}
 		#end
 	}
@@ -1653,7 +1667,7 @@ class ChartingState extends MusicBeatState
 
 	function changeSection(sec:Int = 0, ?updateMusic:Bool = true):Void
 	{
-		trace('changing section' + sec);
+		//trace('changing section' + sec);
 
 		if (_song.notes[sec] != null)
 		{
@@ -1698,6 +1712,7 @@ class ChartingState extends MusicBeatState
 
 		stepperLength.value = sec.lengthInSteps;
 		check_mustHitSection.checked = sec.mustHitSection;
+		check_gfSection.checked = sec.gfSection;
 		check_altAnim.checked = sec.altAnim;
 		check_changeBPM.checked = sec.changeBPM;
 		stepperSectionBPM.value = sec.bpm;
@@ -1714,36 +1729,25 @@ class ChartingState extends MusicBeatState
 		{
 			leftIcon.changeIcon(healthIconP1);
 			rightIcon.changeIcon(healthIconP2);
+			if (_song.notes[curSection].gfSection) leftIcon.changeIcon('gf');
 		}
 		else
 		{
 			leftIcon.changeIcon(healthIconP2);
 			rightIcon.changeIcon(healthIconP1);
+			if (_song.notes[curSection].gfSection) leftIcon.changeIcon('gf');
 		}
 	}
 
 	function loadHealthIconFromCharacter(char:String) {
 		var characterPath:String = 'characters/' + char + '.json';
-		#if dontUseManifest
-		var path:String = Paths.modFolders(characterPath);
-		if (!FileSystem.exists(path)) {
-			path = Paths.getPreloadPath(characterPath);
-		}
-
-		if (!FileSystem.exists(path))
-		#else
 		var path:String = Paths.getPreloadPath(characterPath);
 		if (!OpenFlAssets.exists(path))
-		#end
 		{
 			path = Paths.getPreloadPath('characters/' + Character.DEFAULT_CHARACTER + '.json'); //If a character couldn't be found, change him to BF just to prevent a crash
 		}
 
-		#if dontUseManifest
-		var rawJson = File.getContent(path);
-		#else
 		var rawJson = OpenFlAssets.getText(path);
-		#end
 
 		var json:Character.CharacterFile = cast Json.parse(rawJson);
 		return json.healthicon;
@@ -1786,7 +1790,7 @@ class ChartingState extends MusicBeatState
 		if (_song.notes[curSection].changeBPM && _song.notes[curSection].bpm > 0)
 		{
 			Conductor.changeBPM(_song.notes[curSection].bpm);
-			trace('BPM of this section:');
+			//trace('BPM of this section:');
 		}
 		else
 		{
@@ -1805,7 +1809,7 @@ class ChartingState extends MusicBeatState
 				{
 					if (_song.notes[sec].sectionNotes[notesse][2] == null)
 					{
-						trace('SUS NULL');
+						//trace('SUS NULL');
 						_song.notes[sec].sectionNotes[notesse][2] = 0;
 					}
 				}
@@ -1921,6 +1925,7 @@ class ChartingState extends MusicBeatState
 			bpm: _song.bpm,
 			changeBPM: false,
 			mustHitSection: true,
+			gfSection: false,
 			sectionNotes: [],
 			typeOfSection: 0,
 			altAnim: false
@@ -1999,7 +2004,7 @@ class ChartingState extends MusicBeatState
 			_song.notes[curSection].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus, noteTypeIntMap.get(daType)]);
 		}
 
-		trace(noteData + ', ' + noteStrum + ', ' + curSection);
+		//trace(noteData + ', ' + noteStrum + ', ' + curSection);
 		strumTimeInputText.text = '' + curSelectedNote[0];
 
 		updateGrid();
@@ -2036,7 +2041,7 @@ class ChartingState extends MusicBeatState
 
 				if (sec != null && sec == i)
 				{
-					trace('swag loop??');
+					//trace('swag loop??');
 					break;
 				}
 			}
@@ -2047,7 +2052,7 @@ class ChartingState extends MusicBeatState
 
 	function loadLevel():Void
 	{
-		trace(_song.notes);
+		//trace(_song.notes);
 	}
 
 	function getNotes():Array<Dynamic>
@@ -2130,6 +2135,7 @@ class ChartingState extends MusicBeatState
 				lengthInSteps: 16,
 				typeOfSection: 0,
 				mustHitSection: false,
+				gfSection: false,
 				bpm: 0,
 				changeBPM: false,
 				altAnim: false
@@ -2157,6 +2163,8 @@ class ChartingState extends MusicBeatState
 		}
 
 		var data:String = Json.stringify(json, "\t");
+
+		openfl.system.System.setClipboard(data.trim());
 
 		if ((data != null) && (data.length > 0))
 		{

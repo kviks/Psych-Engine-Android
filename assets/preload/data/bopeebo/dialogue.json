@@ -1,0 +1,18 @@
+{
+	"dialogue": [
+		{
+			"expression": "talk",
+			"text": "kek?",
+			"boxState": "normal",
+			"speed": 0.05,
+			"portrait": "bf"
+		},
+		{
+			"expression": "talk",
+			"text": "yay",
+			"boxState": "normal",
+			"speed": 0.05,
+			"portrait": "bf"
+		}
+	]
+}

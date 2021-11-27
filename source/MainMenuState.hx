@@ -22,7 +22,7 @@ import Achievements;
 import editors.MasterEditorMenu;
 import flixel.ui.FlxButton;
 import lime.app.Application;
-import utils.AndroidData;
+//import utils.AndroidData;
 
 //import ui.FlxVirtualPad; // lol
 
@@ -37,9 +37,9 @@ class MainMenuState extends MusicBeatState
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
 
-	var keyeditors:FlxUIButton;
+	//var key_editors:FlxButton;
 	
-	var optionShit:Array<String> = ['story_mode', 'freeplay', 'credits', 'donate', 'options'];
+	var optionShit:Array<String> = ['story_mode', 'freeplay', #if ACHIEVEMENTS_ALLOWED 'awards', #end 'credits', #if !switch 'donate', #end 'options'/*, 'lol'*/];
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -114,11 +114,11 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 24, 0, "Friday Night Funkin' v" + Application.current.meta.get('version'), 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Friday Night Funkin' v" + Application.current.meta.get('version'), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -140,13 +140,9 @@ class MainMenuState extends MusicBeatState
 		}
 		#end
 
-		keyeditors = new FlxUIButton(60, 60, "Editors");
-        keyeditors.setLabelFormat("VCR OSD Mono",24,FlxColor.BLACK,"center");
-		keyeditors.resize(125,50);
-        keyeditors.alpha = 0.75;
-        add(keyeditors);
-
- 	 	addVirtualPad(FULL, A_B);
+		#if mobileC
+ 	 	addVirtualPad(FULL, A_B_C);
+ 	 	#end
 
 		super.create();
 	}
@@ -242,11 +238,13 @@ class MainMenuState extends MusicBeatState
 					});
 				}
 			}
-			else if (FlxG.keys.justPressed.SEVEN || keyeditors.justPressed)
+			#if mobile
+			else if (_virtualpad.buttonC.justPressed)
 			{
 				selectedSomethin = true;
 				MusicBeatState.switchState(new MasterEditorMenu());
 			}
+			#end
 		}
 
 		super.update(elapsed);

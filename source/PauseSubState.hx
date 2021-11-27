@@ -13,6 +13,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.FlxCamera;
+import ui.FlxVirtualPad;
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -115,9 +116,14 @@ class PauseSubState extends MusicBeatSubstate
 		changeSelection();
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
-	
-		addVirtualPad(UP_DOWN, A);
 
+		#if mobileC
+		_virtualpad = new FlxVirtualPad(UP_DOWN, A);
+    	
+    	_virtualpad.alpha = 0.75;
+    	add(_virtualpad);
+    	// this.add(_virtualpad);
+		#end
 	}
 
 	override function update(elapsed:Float)
@@ -127,9 +133,9 @@ class PauseSubState extends MusicBeatSubstate
 
 		super.update(elapsed);
 
-		var upP = controls.UI_UP_P;
-		var downP = controls.UI_DOWN_P;
-		var accepted = controls.ACCEPT;
+		var upP = _virtualpad.buttonUp.justPressed;
+		var downP = _virtualpad.buttonDown.justPressed;
+		var accepted = _virtualpad.buttonA.justPressed;
 
 		if (upP)
 		{
@@ -139,7 +145,6 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			changeSelection(1);
 		}
-
 		if (accepted)
 		{
 			var daSelected:String = menuItems[curSelected];

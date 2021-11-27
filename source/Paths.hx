@@ -24,15 +24,27 @@ class Paths
 
 	#if MODS_ALLOWED
 	#if (haxe >= "4.0.0")
-	public static var ignoreModFolders:Map<String, Bool> = new Map();
 	public static var customImagesLoaded:Map<String, Bool> = new Map();
 	public static var customSoundsLoaded:Map<String, Sound> = new Map();
 	#else
-	public static var ignoreModFolders:Map<String, Bool> = new Map<String, Bool>();
 	public static var customImagesLoaded:Map<String, Bool> = new Map<String, Bool>();
 	public static var customSoundsLoaded:Map<String, Sound> = new Map<String, Sound>();
 	#end
 	#end
+
+	public static var ignoreModFolders:Map<String, Bool> = [
+		'characters' => true,
+		'custom_events' => true,
+		'custom_notetypes' => true,
+		'data' => true,
+		'songs' => true,
+		'music' => true,
+		'sounds' => true,
+		'videos' => true,
+		'images' => true,
+		'stages' => true,
+		'weeks' => true
+	];
 
 	public static function destroyLoadedImages(ignoreCheck:Bool = false) {
 		#if MODS_ALLOWED
@@ -50,24 +62,10 @@ class Paths
 		#end
 	}
 
+
+
 	static public var currentModDirectory:String = null;
 	static var currentLevel:String;
-	static public function getModFolders()
-	{
-		#if MODS_ALLOWED
-		ignoreModFolders.set('characters', true);
-		ignoreModFolders.set('custom_events', true);
-		ignoreModFolders.set('custom_notetypes', true);
-		ignoreModFolders.set('data', true);
-		ignoreModFolders.set('songs', true);
-		ignoreModFolders.set('music', true);
-		ignoreModFolders.set('sounds', true);
-		ignoreModFolders.set('videos', true);
-		ignoreModFolders.set('images', true);
-		ignoreModFolders.set('stages', true);
-		ignoreModFolders.set('weeks', true);
-		#end
-	}
 
 	static public function setCurrentLevel(name:String)
 	{
@@ -131,14 +129,24 @@ class Paths
 		return getPath('data/$key.json', TEXT, library);
 	}
 
-	inline static public function lua(key:String, ?library:String)
+	inline static public function lua(key:String,?library:String)
 	{
-		return getPath('$key.lua', TEXT, library);
+		return Main.path + getPath('data/$key.lua', TEXT, library);
+	}
+
+	inline static public function luaAsset(key:String,?library:String)
+	{
+		return getPath('data/$key.lua', TEXT, library);
+	}
+
+	inline static public function luaImage(key:String, ?library:String)
+	{
+		return Main.path + getPath('data/$key.png', IMAGE, library);
 	}
 
 	static public function video(key:String)
 	{
-		#if dontUseManifest
+		#if MODS_ALLOWED
 		var file:String = modsVideo(key);
 		if(FileSystem.exists(file)) {
 			return file;
@@ -149,7 +157,7 @@ class Paths
 
 	static public function sound(key:String, ?library:String):Dynamic
 	{
-		#if dontUseManifest
+		#if MODS_ALLOWED
 		var file:String = modsSounds(key);
 		if(FileSystem.exists(file)) {
 			if(!customSoundsLoaded.exists(file)) {
@@ -168,7 +176,7 @@ class Paths
 
 	inline static public function music(key:String, ?library:String):Dynamic
 	{
-		#if dontUseManifest
+		#if MODS_ALLOWED
 		var file:String = modsMusic(key);
 		if(FileSystem.exists(file)) {
 			if(!customSoundsLoaded.exists(file)) {
@@ -182,7 +190,7 @@ class Paths
 
 	inline static public function voices(song:String):Any
 	{
-		#if dontUseManifest
+		#if MODS_ALLOWED
 		var file:Sound = returnSongFile(modsSongs(song.toLowerCase().replace(' ', '-') + '/Voices'));
 		if(file != null) {
 			return file;
@@ -193,7 +201,7 @@ class Paths
 
 	inline static public function inst(song:String):Any
 	{
-		#if dontUseManifest
+		#if MODS_ALLOWED
 		var file:Sound = returnSongFile(modsSongs(song.toLowerCase().replace(' ', '-') + '/Inst'));
 		if(file != null) {
 			return file;
@@ -202,7 +210,7 @@ class Paths
 		return 'songs:assets/songs/${song.toLowerCase().replace(' ', '-')}/Inst.$SOUND_EXT';
 	}
 
-	#if dontUseManifest
+	#if MODS_ALLOWED
 	inline static private function returnSongFile(file:String):Sound
 	{
 		if(FileSystem.exists(file)) {
@@ -217,7 +225,7 @@ class Paths
 
 	inline static public function image(key:String, ?library:String):Dynamic
 	{
-		#if dontUseManifest
+		#if MODS_ALLOWED
 		var imageToReturn:FlxGraphic = addCustomGraphic(key);
 		if(imageToReturn != null) return imageToReturn;
 		#end
@@ -226,7 +234,7 @@ class Paths
 	
 	static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String
 	{
-		#if dontUseManifest
+		#if sys
 		if (!ignoreMods && FileSystem.exists(mods(key)))
 			return File.getContent(mods(key));
 
@@ -257,7 +265,7 @@ class Paths
 
 	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
 	{
-		#if dontUseManifest
+		#if MODS_ALLOWED
 		if(FileSystem.exists(mods(currentModDirectory + '/' + key)) || FileSystem.exists(mods(key))) {
 			return true;
 		}
@@ -271,14 +279,14 @@ class Paths
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)
 	{
-		#if dontUseManifest
+		#if MODS_ALLOWED
 		var imageLoaded:FlxGraphic = addCustomGraphic(key);
 		var xmlExists:Bool = false;
 		if(FileSystem.exists(modsXml(key))) {
 			xmlExists = true;
 		}
 
-		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)), (xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
+		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)), (xmlExists ? Assets.getText(modsXml(key)) : file('images/$key.xml', library)));
 		#else
 		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
 		#end
@@ -286,7 +294,7 @@ class Paths
 
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
-		#if dontUseManifest
+		#if MODS_ALLOWED
 		var imageLoaded:FlxGraphic = addCustomGraphic(key);
 		var txtExists:Bool = false;
 		if(FileSystem.exists(modsTxt(key))) {
@@ -303,6 +311,7 @@ class Paths
 		return path.toLowerCase().replace(' ', '-');
 	}
 	
+	#if MODS_ALLOWED
 	static public function addCustomGraphic(key:String):FlxGraphic {
 		if(FileSystem.exists(modsImages(key))) {
 			if(!customImagesLoaded.exists(key)) {
@@ -318,7 +327,7 @@ class Paths
 	}
 
 	inline static public function mods(key:String = '') {
-		return 'mods/' + key;
+		return Main.path + 'mods/' + key;
 	}
 
 	inline static public function modsJson(key:String) {
@@ -360,6 +369,7 @@ class Paths
 				return fileToCheck;
 			}
 		}
-		return 'mods/' + key;
+		return Main.path + 'mods/' + key;
 	}
+	#end
 }
