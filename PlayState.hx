@@ -3460,20 +3460,4 @@ class PlayState extends MusicBeatState
 				boyfriend.dance();
 		}
 
-		playerStrums.forEach(function(spr:StrumNote)
-		{
-			if(controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm') {
-				spr.playAnim('pressed');
-				spr.resetAnim = 0;
-			}
-			if(controlReleaseArray[spr.ID]) {
-				spr.playAnim('static');
-				spr.resetAnim = 0;
-			}
-		});
-	}
-
-	function ghostMiss(statement:Bool = false, direction:Int = 0, ?ghostMiss:Bool = false) {
-		if (statement) {
-			noteMissPress(direction, ghostMiss);
-			callOnLuas('not…
+		playerStrums.forEach…
