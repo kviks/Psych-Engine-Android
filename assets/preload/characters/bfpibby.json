@@ -1,0 +1,81 @@
+{
+  "animation": {
+    "idle": {
+      "name": "BF idle dance",
+      "loop": false
+    },
+    "singUP": {
+      "name": "BF NOTE UP0",
+      "loop": false
+    },
+    "singDOWN": {
+      "name": "BF NOTE DOWN0",
+      "loop": false
+    },
+    "singLEFT": {
+      "name": "BF NOTE LEFT0",
+      "loop": false
+    },
+    "singRIGHT": {
+      "name": "BF NOTE RIGHT0",
+      "loop": false
+    },
+    "singLEFTmiss": {
+      "name": "BF NOTE LEFT MISS",
+      "loop": false
+    },
+    "singRIGHTmiss": {
+      "name": "BF NOTE RIGHT MISS",
+      "loop": false
+    },
+    "singUPmiss": {
+      "name": "BF NOTE UP MISS",
+      "loop": false
+    },
+    "singDOWNmiss": {
+      "name": "BF NOTE DOWN MISS",
+      "loop": false
+    },
+    "hey": {
+      "name": "BF HEY",
+      "loop": false
+    },
+    "firstDeath": {
+      "name": "BF dies",
+      "loop": false
+    },
+    "deathLoop": {
+      "name": "BF Dead Loop",
+      "loop": true
+    },
+    "deathConfirm": {
+      "name": "BF Dead confirm",
+      "loop": false
+    },
+    "scared": {
+      "name": "BF idle shaking",
+      "loop": false
+    }
+  },
+  "offset": {
+    "idle": [-5,40],
+    "singUP": [-29,110],
+    "singRIGHT": [-5,25],
+    "singLEFT": [25, 50],
+    "singDOWN": [-5, -15],
+    "singUPmiss": [-29,110],
+    "singRIGHTmiss": [-5,25],
+    "singLEFTmiss": [25, 50],
+    "singDOWNmiss": [-5, -15],
+    "hey": [7,44],
+    "firstDeath": [37,11],
+    "deathLoop": [37, 5],
+    "deathConfirm": [37,69],
+    "scared": [-4, 40]
+  },
+  "flipx": true,
+  "enemyOffset": [0,350],
+  "followCam": [-100,-100],
+  "like": "bf",
+  "playAnim": "idle"
+}

@@ -1,0 +1,61 @@
+{
+  "animation": {
+    "idle": {
+      "name": "Pico Idle Dance",
+      "loop": false
+    },
+    "singUP": {
+      "name": "pico Up note0",
+      "loop": false
+    },
+    "singDOWN": {
+      "name": "Pico Down Note0",
+      "loop": false
+    },
+    "singLEFT": {
+      "name": "Pico NOTE LEFT0",
+      "loop": false,
+      "flippedname": "Pico Note Right0"
+    },
+    "singRIGHT": {
+      "name": "BF NOTE RIGHT0",
+      "loop": false,
+      "flippedname": "Pico NOTE LEFT0"
+    },
+    "singLEFTmiss": {
+      "name": "Pico NOTE LEFT miss",
+      "loop": false,
+      "flippedname": "Pico Note Right Miss"
+    },
+    "singRIGHTmiss": {
+      "name": "Pico Note Right Miss",
+      "loop": false,
+      "flippedname": "Pico NOTE LEFT miss"
+    },
+    "singUPmiss": {
+      "name": "pico Up note miss",
+      "loop": false
+    },
+    "singDOWNmiss": {
+      "name": "Pico Down Note MISS",
+      "loop": false
+    }
+  },
+  "offset": {
+    "idle": [0,0],
+    "singUP": [-20,0],
+    "singRIGHT": [-90,-25],
+    "singLEFT": [170, -10],
+    "singDOWN": [180, -100],
+    "singUPmiss": [-19, 67],
+    "singRIGHTmiss": [-60, 41],
+    "singLEFTmiss": [62,64],
+    "singDOWNmiss": [210, -28]
+  },
+  "flipx": true,
+  "camOffset": [600,0],
+  "followCam": [325,25],
+  "enemyOffset": [0,295],
+  "like": "pico",
+  "playAnim": "idle"
+}
