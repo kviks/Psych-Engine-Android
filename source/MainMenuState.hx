@@ -55,14 +55,7 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-                @:privateAccess
-		{
-                    try {
-                        Application.current.window.alert("ok, all is working fine, path to internal storage is: " + EFSLinker.getInternalStorageDir(), "Extension_fileSystem");
-                    } catch(e) {
-                        Application.current.window.alert("it seems that this stupidness won't work " + e.message, "Extension_fileSystem");
-                    }
-                }
+                
 
 		camGame = new FlxCamera();
 		camAchievement = new FlxCamera();
