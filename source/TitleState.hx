@@ -27,9 +27,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
-#if sys
-import sys.FileSystem;
-#end
 
 using StringTools;
 
@@ -50,17 +47,10 @@ class TitleState extends MusicBeatState
 	var curWacky:Array<String> = [];
 
 	var wackyImage:FlxSprite;
+
 	var easterEggEnabled:Bool = true; //Disable this to hide the easter egg
-//	#if desktop
 	var easterEggKeyCombination:Array<FlxKey> = [FlxKey.B, FlxKey.B]; //bb stands for bbpanzu cuz he wanted this lmao
-//	#else // android
-//	var easterEggKeyCombination:Array<controls> = [controls.BACK, controls.BACK]; //backback stands for bbpanzu cuz he wanted this lmao
-//	#end
-//	#if desktop
 	var lastKeysPressed:Array<FlxKey> = [];
-//	#else  // android
-	//var lastKeysPressed:Array<controls> = [];
-	//#end
 
 	var mustUpdate:Bool = false;
 	public static var updateVersion:String = '';
@@ -68,17 +58,28 @@ class TitleState extends MusicBeatState
 	override public function create():Void
 	{
 		#if android
-	    FlxG.android.preventDefaultKeys = [BACK];
-	    #end
-	    
-		#if (polymod && !html5)
-		polymod.Polymod.init({modRoot: "mods", dirs: folders});
+		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 
+		#if (polymod && !html5)
+		if (sys.FileSystem.exists('mods/')) {
+			var folders:Array<String> = [];
+			for (file in sys.FileSystem.readDirectory('mods/')) {
+				var path = haxe.io.Path.join(['mods/', file]);
+				if (sys.FileSystem.isDirectory(path)) {
+					folders.push(file);
+				}
+			}
+			if(folders.length > 0) {
+				polymod.Polymod.init({modRoot: "mods", dirs: folders});
+			}
+		}
+		#end
+		
 		#if CHECK_FOR_UPDATES
 		if(!closedState) {
 			trace('checking for update');
-			var http = new haxe.Http("	");
+			var http = new haxe.Http("https://raw.githubusercontent.com/ShadowMario/FNF-PsychEngine/main/gitVersion.txt");
 			
 			http.onData = function (data:String)
 			{
@@ -476,12 +477,12 @@ class TitleState extends MusicBeatState
 				case 4:
 					deleteCoolText();
 				// credTextShit.visible = false;
-				// credTextShit.text = 'In association \nwith';
+				// credTextShit.text = 'mod by \on credits lol';
 				// credTextShit.screenCenter();
 				case 5:
-					createCoolText(['This is a mod to'], -60);
+					createCoolText(['fuck you'], -60);
 				case 7:
-					addMoreText('This game right below lol', -60);
+					addMoreText('discord server', -60);
 					logoSpr.visible = true;
 				// credTextShit.text += '\nNewgrounds';
 				case 8:
@@ -509,7 +510,7 @@ class TitleState extends MusicBeatState
 					addMoreText('Night');
 				// credTextShit.text += '\nNight';
 				case 15:
-					addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+					addMoreText('Funkin vs unikkity'); // credTextShit.text += '\nFunkin';
 
 				case 16:
 					skipIntro();
