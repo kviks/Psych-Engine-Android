@@ -1,0 +1,31 @@
+{
+	"storyName": "Vs Fuckboy",
+	"hideFreeplay": false,
+	"weekBackground": "Selever 3",
+	"freeplayColor": [
+		146,
+		113,
+		253
+	],
+	"weekBefore": "tutorial",
+	"startUnlocked": true,
+	"hideStoryMode": true,
+	"weekCharacters": [
+		"SL_Color",
+		"BF_Color",
+		"GF_Color"
+	],
+	"songs": [
+		[
+			"Attacklovania",
+			"Selever_Angry",
+			[
+				150,
+				35,
+				79
+			]
+		]
+	],
+	"weekName": "VS Selever Extras",
+	"difficulties": "Normal,Hard"
+}

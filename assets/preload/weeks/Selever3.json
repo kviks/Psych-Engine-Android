@@ -1,0 +1,31 @@
+{
+	"storyName": "Vs SeleverStyle",
+	"hideFreeplay": false,
+	"weekBackground": "iglesia_week",
+	"weekBefore": "Selever 2",
+	"freeplayColor": [
+		146,
+		113,
+		253
+	],
+	"startUnlocked": true,
+	"songs": [
+		[
+			"Crimsong",
+			"Selever_Angry",
+			[
+				150,
+				35,
+				79
+			]
+		]
+	],
+	"hideStoryMode": false,
+	"weekCharacters": [
+		"SL_A_Color",
+		"BF_Color",
+		"GF_Color"
+	],
+	"weekName": "VS Selever Plus",
+	"difficulties": "Hard"
+}
