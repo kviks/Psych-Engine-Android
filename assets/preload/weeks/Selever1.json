@@ -1,0 +1,49 @@
+{
+	"storyName": "Vs Fuckboy",
+	"hideFreeplay": false,
+	"weekBackground": "iglesia_week",
+	"freeplayColor": [
+		146,
+		113,
+		253
+	],
+	"weekBefore": "tutorial",
+	"startUnlocked": true,
+	"songs": [
+		[
+			"Demonila",
+			"Selever",
+			[
+				150,
+				35,
+				79
+			]
+		],
+		[
+			"Casanova",
+			"Selever",
+			[
+				150,
+				35,
+				79
+			]
+		],
+		[
+			"Attack",
+			"Selever_Angry",
+			[
+				150,
+				35,
+				79
+			]
+		]
+	],
+	"hideStoryMode": false,
+	"weekCharacters": [
+		"SL_Color",
+		"BF_Color",
+		"GF_Color"
+	],
+	"weekName": "VS Selever",
+	"difficulties": "Normal,Hard"
+}
