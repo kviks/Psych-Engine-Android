@@ -24,6 +24,18 @@ class CreditsState extends MusicBeatState
 	private var iconArray:Array<AttachedSprite> = [];
 
 	private static var creditsStuff:Array<Dynamic> = [ //Name - Icon name - Description - Link - BG Color
+		["T3ddy night funkin' Team"],
+		['Cherry',		'cherry',		'Director, Main composer and artist',						'https://twitter.com/Kanna440',	0xFFFF89CA],
+		['Daisy',			'daisy',		'Main Programmer and charter, secondary animator, vocalist for klaus',					'https://twitter.com/daisythatpeep',		0xFF8E249D],
+		['Boybob',			'bb',		'Composer, charter for "editor"',					'https://www.youtube.com/channel/UCIawZZDpU_gyKF4HXHrYq5g',		0xFF1666B2],
+		[''],
+		['Mod social media'],
+		['Discord server',		'discord',		"The mod's discord server!",						'https://discord.gg/QRumEtmAJM',	0xFF5165F6],
+		['Twitter page',			'twitter',		"The mod's twitter page",					'https://twitter.com/TNF0ficial',		0xFF17A2F2],
+		[''],
+		['Special thanks'],
+		['Rozebud & Banbuds',		'face',		"Tricky sprites and voices",						'https://twitter.com/banbuds',	0xFFA1A1A1],
+		[''],
 		['Psych Engine Android by'],
 		['Kviks',				'kviks',			'Main Programmer of Psych Engine Android',			'https://youtube.com/channel/UChPjrBq7z7oSVcB3FcHMDCA',	0xFFF73838],
 		[''],
