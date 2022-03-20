@@ -1,8 +1,8 @@
 {
 	"songs": [
-		["Pico", "pico", [148, 22, 83], "Pico"],
-		["Philly Nice", "pico", [148, 22, 83], "Philly Nice"],
-		["Blammed", "pico", [148, 22, 83], "Blammed"]
+		["Pico", "pico", [148, 22, 83]],
+		["Philly Nice", "pico", [148, 22, 83]],
+		["Blammed", "pico", [148, 22, 83]]
 	],
 
 	"weekCharacters": [
@@ -18,7 +18,5 @@
 	"startUnlocked": true,
 
 	"hideStoryMode": false,
-	"hideFreeplay": false,
-	"showcutscene": false,
-	"currentcutscene": "template"
+	"hideFreeplay": false
 }

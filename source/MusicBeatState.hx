@@ -2,16 +2,17 @@ package;
 
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.FlxState;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIState;
-import openfl.utils.Assets;
-#if mobileC
-import flixel.FlxCamera;
-import flixel.input.actions.FlxActionInput;
-import ui.FlxVirtualPad;
-#end
+import flixel.math.FlxRect;
+import flixel.util.FlxTimer;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.FlxSprite;
+import flixel.util.FlxColor;
+import flixel.util.FlxGradient;
+import flixel.FlxState;
+import flixel.FlxBasic;
 
 class MusicBeatState extends FlxUIState
 {
@@ -20,50 +21,18 @@ class MusicBeatState extends FlxUIState
 
 	private var curStep:Int = 0;
 	private var curBeat:Int = 0;
+
 	private var controls(get, never):Controls;
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-	#if mobileC
-		var _virtualpad:FlxVirtualPad;
-
-		var trackedinputs:Array<FlxActionInput> = [];
-
-		// adding virtualpad to state
-		public function addVirtualPad(?DPad:FlxDPadMode, ?Action:FlxActionMode) {
-			_virtualpad = new FlxVirtualPad(DPad, Action);
-			_virtualpad.alpha = 0.75;
-			var padcam = new FlxCamera();
-			FlxG.cameras.add(padcam);
-			padcam.bgColor.alpha = 0;
-			_virtualpad.cameras = [padcam];
-			add(_virtualpad);
-			controls.setVirtualPad(_virtualpad, DPad, Action);
-			trackedinputs = controls.trackedinputs;
-			controls.trackedinputs = [];
-
-			#if android
-			controls.addAndroidBack();
-			#end
-		}
-		
-		override function destroy() {
-			controls.removeFlxInput(trackedinputs);
-
-			super.destroy();
-		}
-		#else
-		public function addVirtualPad(?DPad, ?Action){};
-		#end
-
 	override function create() {
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
 		super.create();
 
-		// Custom made Trans out
 		if(!skip) {
-			openSubState(new CustomFadeTransition(1, true));
+			openSubState(new CustomFadeTransition(0.7, true));
 		}
 		FlxTransitionableState.skipNextTransOut = false;
 	}
@@ -92,6 +61,8 @@ class MusicBeatState extends FlxUIState
 
 		if (oldStep != curStep && curStep > 0)
 			stepHit();
+
+		if(FlxG.save.data != null) FlxG.save.data.fullscreen = FlxG.fullscreen;
 
 		super.update(elapsed);
 	}
@@ -122,7 +93,7 @@ class MusicBeatState extends FlxUIState
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
 		if(!FlxTransitionableState.skipNextTransIn) {
-			leState.openSubState(new CustomFadeTransition(0.7, false));
+			leState.openSubState(new CustomFadeTransition(0.6, false));
 			if(nextState == FlxG.state) {
 				CustomFadeTransition.finishCallback = function() {
 					FlxG.resetState();

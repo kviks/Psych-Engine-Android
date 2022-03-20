@@ -3,9 +3,7 @@
 	<!-- Created with Adobe Animate version 21.0.1.37179 -->
 	<!-- http://www.adobe.com/products/animate.html -->
 	<SubTexture name="GF0000" x="4" y="4" width="293" height="414" pivotX="-70.4" pivotY="303.55"/>
-	<SubTexture name="GF0001" x="4" y="4" width="293" height="414"/>
 	<SubTexture name="GF CONFUSED0000" x="301" y="4" width="293" height="414" pivotX="-70.4" pivotY="303.55"/>
-	<SubTexture name="GF CONFUSED0001" x="301" y="4" width="293" height="414"/>
 	<SubTexture name="GF CONFUSED LOOP0000" x="598" y="4" width="293" height="424" pivotX="-66.55" pivotY="311.45" frameX="-3" frameY="0" frameWidth="299" frameHeight="424"/>
 	<SubTexture name="GF CONFUSED LOOP0001" x="598" y="4" width="293" height="424" frameX="-3" frameY="0" frameWidth="299" frameHeight="424"/>
 	<SubTexture name="GF CONFUSED LOOP0002" x="895" y="4" width="292" height="419" frameX="0" frameY="-3" frameWidth="299" frameHeight="424"/>
@@ -23,7 +21,6 @@
 	<SubTexture name="GF DEMON LOOP0004" x="2974" y="4" width="293" height="414" frameX="-4" frameY="-8" frameWidth="299" frameHeight="424"/>
 	<SubTexture name="GF DEMON LOOP0005" x="3271" y="4" width="295" height="413" frameX="-4" frameY="-9" frameWidth="299" frameHeight="424"/>
 	<SubTexture name="GF EXCITED0000" x="3570" y="4" width="292" height="422" pivotX="-72.7" pivotY="313.6"/>
-	<SubTexture name="GF EXCITED0001" x="3570" y="4" width="292" height="422"/>
 	<SubTexture name="GF EXCITED LOOP0000" x="4" y="432" width="283" height="446" pivotX="-66.75" pivotY="330.3" frameX="-9" frameY="0" frameWidth="302" frameHeight="446"/>
 	<SubTexture name="GF EXCITED LOOP0001" x="4" y="432" width="283" height="446" frameX="-9" frameY="0" frameWidth="302" frameHeight="446"/>
 	<SubTexture name="GF EXCITED LOOP0002" x="291" y="432" width="289" height="432" frameX="0" frameY="-9" frameWidth="302" frameHeight="446"/>

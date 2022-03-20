@@ -45,7 +45,8 @@ class MenuCharacterEditorState extends MusicBeatState
 			scale: 1,
 			position: [0, 0],
 			idle_anim: 'M Dad Idle',
-			confirm_anim: 'M Dad Idle'
+			confirm_anim: 'M Dad Idle',
+			flipX: false
 		};
 		#if desktop
 		// Updating Discord Rich Presence
@@ -164,21 +165,26 @@ class MenuCharacterEditorState extends MusicBeatState
 	var confirmInputText:FlxUIInputText;
 	var confirmDescText:FlxText;
 	var scaleStepper:FlxUINumericStepper;
+	var flipXCheckbox:FlxUICheckBox;
 	function addCharacterUI() {
 		var tab_group = new FlxUI(null, UI_mainbox);
 		tab_group.name = "Character";
 		
 		imageInputText = new FlxUIInputText(10, 20, 80, characterFile.image, 8);
-		imageInputText.focusGained = () -> FlxG.stage.window.textInputEnabled = true;
 		blockPressWhileTypingOn.push(imageInputText);
 		idleInputText = new FlxUIInputText(10, imageInputText.y + 35, 100, characterFile.idle_anim, 8);
-		idleInputText.focusGained = () -> FlxG.stage.window.textInputEnabled = true;
 		blockPressWhileTypingOn.push(idleInputText);
 		confirmInputText = new FlxUIInputText(10, idleInputText.y + 35, 100, characterFile.confirm_anim, 8);
-		confirmInputText.focusGained = () -> FlxG.stage.window.textInputEnabled = true;
 		blockPressWhileTypingOn.push(confirmInputText);
 
-		var reloadImageButton:FlxButton = new FlxButton(10, confirmInputText.y + 30, "Reload Char", function() {
+		flipXCheckbox = new FlxUICheckBox(10, confirmInputText.y + 30, null, null, "Flip X", 100);
+		flipXCheckbox.callback = function()
+		{
+			grpWeekCharacters.members[curTypeSelected].flipX = flipXCheckbox.checked;
+			characterFile.flipX = flipXCheckbox.checked;
+		};
+
+		var reloadImageButton:FlxButton = new FlxButton(140, confirmInputText.y + 30, "Reload Char", function() {
 			reloadSelectedCharacter();
 		});
 		
@@ -188,6 +194,7 @@ class MenuCharacterEditorState extends MusicBeatState
 		tab_group.add(new FlxText(10, imageInputText.y - 18, 0, 'Image file name:'));
 		tab_group.add(new FlxText(10, idleInputText.y - 18, 0, 'Idle animation on the .XML:'));
 		tab_group.add(new FlxText(scaleStepper.x, scaleStepper.y - 18, 0, 'Scale:'));
+		tab_group.add(flipXCheckbox);
 		tab_group.add(reloadImageButton);
 		tab_group.add(confirmDescText);
 		tab_group.add(imageInputText);
@@ -231,6 +238,7 @@ class MenuCharacterEditorState extends MusicBeatState
 		char.frames = Paths.getSparrowAtlas('menucharacters/' + characterFile.image);
 		char.animation.addByPrefix('idle', characterFile.idle_anim, 24);
 		if(curTypeSelected == 1) char.animation.addByPrefix('confirm', characterFile.confirm_anim, 24, false);
+		char.flipX = (characterFile.flipX == true);
 
 		char.scale.set(characterFile.scale, characterFile.scale);
 		char.updateHitbox();
@@ -281,14 +289,7 @@ class MenuCharacterEditorState extends MusicBeatState
 			FlxG.sound.muteKeys = TitleState.muteKeys;
 			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
 			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
-			#if android
-			var androidback = FlxG.android.justReleased.BACK;
-			#else
-			var androidback = false;
-			#end
-
-			if (FlxG.keys.justPressed.ESCAPE #if mobileC || androidback #end) {
-				FlxG.mouse.visible = false;
+			if(FlxG.keys.justPressed.ESCAPE) {
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
@@ -348,10 +349,10 @@ class MenuCharacterEditorState extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 
-		#if dontUseManifest
+		#if sys
 		var fullPath:String = null;
-		var jsonLoaded = cast Json.parse(Json.stringify(_file)); //Exploit(???) for accessing a private variable
-		if(jsonLoaded.__path != null) fullPath = jsonLoaded.__path; //I'm either a genious or dangerously dumb
+		@:privateAccess
+		if(_file.__path != null) fullPath = _file.__path;
 
 		if(fullPath != null) {
 			var rawJson:String = File.getContent(fullPath);

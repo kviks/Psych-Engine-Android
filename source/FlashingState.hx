@@ -26,8 +26,8 @@ class FlashingState extends MusicBeatState
 		warnText = new FlxText(0, 0, FlxG.width,
 			"Hey, watch out!\n
 			This Mod contains some flashing lights!\n
-			To disable them now go to Options Menu.\n
-			Touch the screen to enter the game.\n
+			Press ENTER to disable them now or go to Options Menu.\n
+			Press ESCAPE to ignore this message.\n
 			You've been warned!",
 			32);
 		warnText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
@@ -37,21 +37,9 @@ class FlashingState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-	    #if mobile
-		var justTouched:Bool = false;
-
-		for (touch in FlxG.touches.list)
-		{
-			justTouched = false;
-			
-			if (touch.justReleased){
-				justTouched = true;
-			}
-		}
-		#end
 		if(!leftState) {
 			var back:Bool = controls.BACK;
-			if (controls.ACCEPT || back #if mobile || justTouched #end) {
+			if (controls.ACCEPT || back) {
 				leftState = true;
 				FlxTransitionableState.skipNextTransIn = true;
 				FlxTransitionableState.skipNextTransOut = true;

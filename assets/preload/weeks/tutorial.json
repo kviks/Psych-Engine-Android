@@ -1,6 +1,6 @@
 {
 	"songs": [
-		["Tutorial", "gf", [165, 0, 77], "Tutorial"]
+		["Tutorial", "gf", [165, 0, 77]]
 	],
 
 	"weekCharacters": [
@@ -16,7 +16,5 @@
 	"startUnlocked": true,
 
 	"hideStoryMode": false,
-	"hideFreeplay": false,
-	"temcutscene": false,
-	"cutscenombre": "irineu"
+	"hideFreeplay": false
 }

@@ -5,6 +5,7 @@ import openfl.events.NetStatusEvent;
 import openfl.media.Video;
 #else
 import openfl.events.Event;
+import vlc.VlcBitmap;
 #end
 import flixel.FlxBasic;
 import flixel.FlxG;
@@ -122,7 +123,7 @@ class FlxVideo extends FlxBasic {
 	
 	function onVLCError()
 		{
-			//trace("An error has occured while trying to load the video.\nPlease, check if the file you're loading exists.");
+			trace("An error has occured while trying to load the video.\nPlease, check if the file you're loading exists.");
 			if (finishCallback != null) {
 				finishCallback();
 			}

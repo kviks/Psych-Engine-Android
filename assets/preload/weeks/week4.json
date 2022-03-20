@@ -1,9 +1,9 @@
 {
 	"songs": [
-		["Satin Panties", "mom", [252, 150, 215], "Satin Panties"],
-		["High", "mom", [252, 150, 215], "High"],
-		["Milf", "mom", [252, 150, 215], "Milf"]
-	],	
+		["Satin Panties", "mom", [252, 150, 215]],
+		["High", "mom", [252, 150, 215]],
+		["Milf", "mom", [252, 150, 215]]
+	],
 	
 	"weekCharacters": [
 		"mom",
@@ -18,7 +18,5 @@
 	"startUnlocked": true,
 
 	"hideStoryMode": false,
-	"hideFreeplay": false,
-	"showcutscene": false,
-	"currentcutscene": "template"
+	"hideFreeplay": false
 }
