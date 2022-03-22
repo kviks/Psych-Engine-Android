@@ -70,6 +70,10 @@ class Main extends Sprite
 		#if !debug
 		initialState = TitleState;
 		#end
+
+		#if android
+		initialState = DirSetupState;
+		#end
 	
 		ClientPrefs.loadDefaultKeys();
 		// fuck you, persistent caching stays ON during sex
