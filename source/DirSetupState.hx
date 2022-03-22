@@ -73,13 +73,13 @@ class DirSetupState extends MusicBeatState
     function showUiError() 
     {
         buttonGroup.forEach(button -> buttonGroup.remove(button).destroy());
-        var buttony = text.y + text.height + 10;
 
         switch (curError)
         {
             case PERMISSION:
             {
                 setText('grand perm for contiune');
+                var buttony = text.y + text.height + 10;
                 var requsetPermButton = new FlxButton(0, buttony, 'requset perm', ()->{
                     initPermisson();
                 });
@@ -107,6 +107,7 @@ class DirSetupState extends MusicBeatState
             case EMPTYFOLDER:
             {
                 setText('Current folder is empty\nDownload assets?');
+                var buttony = text.y + text.height + 10;
 
                 initDir();
                 var downloadButton = new FlxButton(0, buttony, 'Download', ()->{
