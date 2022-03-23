@@ -132,9 +132,9 @@ class DirSetupState extends MusicBeatState
                     // Thread.create(downloadAssets);
                     downloadAssets();
                 });
-                downloadButton.x = (FlxG.width / 2) - (downloadButton.width / 2);
                 setGS(downloadButton, 2);
                 setGS(downloadButton.label, 2);
+                downloadButton.x = (FlxG.width / 2) - (downloadButton.width / 2);
                 buttonGroup.add(downloadButton);
             }
 
@@ -229,7 +229,6 @@ class DirSetupState extends MusicBeatState
                     continue;
 
 				path += fileName;
-                setText('unpacking ${path}');
 				var data = haxe.zip.Reader.unzip(file);
                 // var f = File.write (Paths.dir + "/" + path, true);
                 // f.write(data);
@@ -243,7 +242,14 @@ class DirSetupState extends MusicBeatState
             lime.app.Application.current.window.alert(msg, 'Download error');
             showUiError();
         }
-        http.request();
+        new FlxTimer().start(0.1, _ -> {
+            http.request();
+            setText('done');
+            new FlxTimer().start(2, (_)-> {
+                checkDir();
+                showUiError();
+            });
+        });
     }
 }
 
