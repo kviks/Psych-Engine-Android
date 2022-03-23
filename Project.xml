@@ -132,6 +132,15 @@
 	<!--<haxelib name="polymod"/> -->
 	<haxelib name="discord_rpc" if="desktop"/>
 	<haxelib name="AndroidTools" if="android" />
+
+	<config:android permission="android.permission.READ_EXTERNAL_STORAGE" />
+	<config:android permission="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<config:android permission="android.permission.MANAGE_EXTERNAL_STORAGE" />
+	
+	<config:android permission="android.permission.WAKE_LOCK" />
+	<config:android permission="android.permission.INTERNET" />
+	<config:android permission="android.permission.VIBRATE" />
+	<config:android permission="android.permission.ACCESS_NETWORK_STATE" />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
 	<!-- <haxelib name="markdown" /> -->

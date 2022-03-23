@@ -381,9 +381,11 @@ class Paths
 		return currentTrackedSounds.get(gottenPath);
 	}
 	
+	public static var dir:String;
+
 	#if MODS_ALLOWED
 	inline static public function mods(key:String = '') {
-		return #if android Sys.getCwd() + #end 'mods/' + key;
+		return #if android dir + #end 'mods/' + key;
 	}
 	
 	inline static public function modsFont(key:String) {

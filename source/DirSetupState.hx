@@ -1,5 +1,7 @@
 package;
 
+import sys.thread.Thread;
+import openfl.display.Application;
 import flixel.util.FlxTimer;
 import sys.io.File;
 import haxe.io.BytesBuffer;
@@ -30,12 +32,17 @@ class DirSetupState extends MusicBeatState
 	var logoBl:FlxSprite;
     var buttonGroup:FlxTypedGroup<FlxButton>;
 
+    public function new(i, o) {
+        Paths.dir = AndroidTools.getExternalStorageDirectory() + '/psych/';
+        // Paths.dir = lime.system.System.userDirectory + '/psych/';
+
+        // Sys.setCwd(AndroidTools.getExternalStorageDirectory() + '/psych/');
+        // trace(Sys.getCwd());
+        super(i , o);
+    }
+
     override function create() 
     {
-
-        Sys.setCwd(AndroidTools.getExternalStorageDirectory() + '/psych/');
-        trace(Sys.getCwd());
-
         curError = checkDir();
 
         if (curError == NOERROR)
@@ -58,16 +65,27 @@ class DirSetupState extends MusicBeatState
         logoBl.y -= FlxG.height / 5;
         add(logoBl);
 
+        var curdirtext = new FlxText(5);
+        curdirtext.text = 'Working dir: ${Paths.dir}';
+        curdirtext.size = 16;
+        curdirtext.y = FlxG.height - curdirtext.height - 20;
+        add(curdirtext);
+
         text = new FlxText(0, 0);
-        text.size = 16;
+        text.size = 24;
+        text.alignment = CENTER;
         add(text);
         showUiError();
         super.create();
     }   
+    // override function update(elapsed:Float) {
+    //     trace(AndroidTools.getExternalStorageDirectory() + '/psych/');
+    //     super.update(elapsed);
+    // }
     
     function clearAll() {
         buttonGroup.forEach(button -> buttonGroup.remove(button).destroy());
-        setText('');
+        text.text = '';
     }
 
     function showUiError() 
@@ -79,7 +97,7 @@ class DirSetupState extends MusicBeatState
             case PERMISSION:
             {
                 setText('grand perm for contiune');
-                var buttony = text.y + text.height + 10;
+                var buttony = text.y + text.height + 20;
                 var requsetPermButton = new FlxButton(0, buttony, 'requset perm', ()->{
                     initPermisson();
                 });
@@ -107,14 +125,16 @@ class DirSetupState extends MusicBeatState
             case EMPTYFOLDER:
             {
                 setText('Current folder is empty\nDownload assets?');
-                var buttony = text.y + text.height + 10;
+                var buttony = text.y + text.height + 20;
 
                 initDir();
                 var downloadButton = new FlxButton(0, buttony, 'Download', ()->{
+                    // Thread.create(downloadAssets);
                     downloadAssets();
                 });
-                downloadButton.x = 50;
+                downloadButton.x = (FlxG.width / 2) - (downloadButton.width / 2);
                 setGS(downloadButton, 2);
+                setGS(downloadButton.label, 2);
                 buttonGroup.add(downloadButton);
             }
 
@@ -126,7 +146,7 @@ class DirSetupState extends MusicBeatState
     function setText(str:String) {
         text.text = str;
         text.screenCenter();
-        text.y = logoBl.y + logoBl.height + 10;
+        text.y = logoBl.y + logoBl.height - 30;
     }
 
     function setGS(obj:FlxSprite, size:Float, ?sizeh:Float) {
@@ -191,31 +211,39 @@ class DirSetupState extends MusicBeatState
         var http = new Http('https://media.githubusercontent.com/media/luckydog7/aa/main/psychassets052h.zip');
         http.onBytes = (bytes) ->
         {
-            setText('downloaded!');
             var zipList = Reader.readZip(new BytesInput(bytes));
 
             for (file in zipList)
             {
 				var dirs = ~/[\/\\]/g.split(file.fileName);
+                trace(dirs);
 				var path = "";
 				var fileName = dirs.pop();
 				for( d in dirs ) {
 					path += d;
-					sys.FileSystem.createDirectory(Sys.getCwd() + "/" + path);
+					sys.FileSystem.createDirectory(Paths.dir + "/" + path);
 					path += "/";
 				}
+
+                if( fileName == "" )
+                    continue;
+
 				path += fileName;
+                setText('unpacking ${path}');
 				var data = haxe.zip.Reader.unzip(file);
-                var f = File.write (Sys.getCwd() + "/" + path, true);
-                f.write(data);
-                f.close();
+                // var f = File.write (Paths.dir + "/" + path, true);
+                // f.write(data);
+                // f.close();
+                File.saveBytes(Paths.dir + "/" + path, data);
 
             }
         }
-        // http.onBytes(new ZipTestFile().getBytes());
-        http.onData = (d) -> trace(d);
-        new FlxTimer().start(0.1, _ -> http.request());
-        // http.request();
+        http.onError = (msg) -> 
+        {
+            lime.app.Application.current.window.alert(msg, 'Download error');
+            showUiError();
+        }
+        http.request();
     }
 }
 
