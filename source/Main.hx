@@ -1,95 +1,109 @@
 package;
 
-import flixel.FlxG;
-import flixel.FlxGame;
-import flixel.FlxState;
-import openfl.Assets;
-import openfl.Lib;
+import animateatlas.JSONData.AtlasData;
+import openfl.display.BitmapData;
+import animateatlas.JSONData.AnimationData;
 import openfl.display.FPS;
-import openfl.display.Sprite;
+import openfl.Lib;
+import openfl.events.MouseEvent;
+import animateatlas.HelperEnums.LoopMode;
 import openfl.events.Event;
-#if android
-import lime.system.System;
-#end
+import openfl.display.Tilemap;
+import openfl.display.Tileset;
+import openfl.Assets;
+import haxe.Json;
+import animateatlas.tilecontainer.TileAnimationLibrary;
+import animateatlas.tilecontainer.TileContainerMovieClip;
+import animateatlas.displayobject.SpriteAnimationLibrary;
+import animateatlas.displayobject.SpriteMovieClip;
+import openfl.display.Sprite;
 
-class Main extends Sprite
-{
-	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
-	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
-	var framerate:Int = 60; // How many frames per second the game should run at.
-	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
-	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
-	public static var fpsVar:FPS;
+class Main extends Sprite {
+	var aa:TileAnimationLibrary;
+	var ss:SpriteAnimationLibrary;
 
-	#if android
-	public static var path = lime.system.System.applicationStorageDirectory; // path to storage folder
-	#end
+	//
+	var tileSymbols:Array<TileContainerMovieClip>;
 
+	var spriteSymbols:Array<SpriteMovieClip>;
 
-	// You can pretty much ignore everything from here on - your code should go in your states.
+	var renderer:Tilemap;
 
-	public static function main():Void
-	{
-		Lib.current.addChild(new Main());
-	}
-
-	public function new()
-	{
+	public function new() {
 		super();
+		graphics.beginFill(0x333333);
+		graphics.drawRect(0, 0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight);
 
-		if (stage != null)
-		{
-			init();
+		var animationData:AnimationData = Json.parse(Assets.getText("assets/TEST/Animation.json"));
+		var atlasData:AtlasData = Json.parse(Assets.getText("assets/TEST/spritemap.json"));
+		var bitmapData:BitmapData = Assets.getBitmapData("assets/TEST/spritemap.png");
+
+		aa = new TileAnimationLibrary(animationData, atlasData, bitmapData);
+		ss = new SpriteAnimationLibrary(animationData, atlasData, bitmapData);
+
+		renderer = new Tilemap(Lib.current.stage.stageWidth, Lib.current.stage.stageHeight, null, true);
+
+		renderer.tileAlphaEnabled = false;
+		renderer.tileBlendModeEnabled = false;
+		renderer.tileColorTransformEnabled = false;
+
+		addChild(renderer);
+		addChild(new FPS(10, 10, 0xFFFFFF));
+
+		tileSymbols = [];
+		spriteSymbols = [];
+
+		addEventListener(Event.ENTER_FRAME, update);
+		// addEventListener(MouseEvent.CLICK, addSpriteGirl);
+		addEventListener(MouseEvent.CLICK, addTileGirl);
+	}
+
+	var prev:Int = 0;
+	var dt:Int = 0;
+	var curr:Int = 0;
+
+	public function update(_) {
+		// making a dt
+		curr = Lib.getTimer();
+		dt = curr - prev;
+		prev = curr;
+
+		for (symbol in tileSymbols) {
+			symbol.update(dt);
 		}
-		else
-		{
-			addEventListener(Event.ADDED_TO_STAGE, init);
+		for (symbol in spriteSymbols) {
+			symbol.update(dt);
 		}
 	}
 
-	private function init(?E:Event):Void
-	{
-		if (hasEventListener(Event.ADDED_TO_STAGE))
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-		}
+	public function addSpriteGirl(_) {
+		for (i in 0...1) {
+			var t = ss.createAnimation();
+			t.x = mouseX + i * 20 * (-1 * i % 2);
+			t.y = mouseY + i * 20 * (-1 * i % 2);
 
-		setupGame();
+			addChild(t);
+			t.loopMode = LoopMode.SINGLE_FRAME;
+
+			t.currentLabel = t.getFrameLabels()[Std.random(t.getFrameLabels().length)];
+			spriteSymbols.push(t);
+			trace(spriteSymbols.length);
+		}
 	}
 
-	private function setupGame():Void
-	{
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
+	public function addTileGirl(_) {
+		for (i in 0...1) {
+			var t = aa.createAnimation();
+			t.x = mouseX + i * 5 * (-1 * i % 2);
+			t.y = mouseY + i * 5 * (-1 * i % 2);
 
-		if (zoom == -1)
-		{
-			var ratioX:Float = stageWidth / gameWidth;
-			var ratioY:Float = stageHeight / gameHeight;
-			zoom = Math.min(ratioX, ratioY);
-			gameWidth = Math.ceil(stageWidth / zoom);
-			gameHeight = Math.ceil(stageHeight / zoom);
+			renderer.addTile(t);
+			t.loopMode = LoopMode.SINGLE_FRAME;
+
+			t.currentLabel = t.getFrameLabels()[Std.random(t.getFrameLabels().length)];
+			tileSymbols.push(t);
+
+			trace(tileSymbols.length);
 		}
-
-		#if !debug
-		initialState = TitleState;
-		#end
-		
-		ClientPrefs.loadDefaultKeys();		
-		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
-		var ourSource:String = "assets/videos/DO NOT DELETE OR GAME WILL CRASH/dontDelete.webm";
-
-		fpsVar = new FPS(10, 3, 0xFFFFFF);
-		addChild(fpsVar);
-		if(fpsVar != null) {
-			fpsVar.visible = ClientPrefs.showFPS;
-		}
-	
-		#if html5
-		FlxG.autoPause = false;
-		FlxG.mouse.visible = false;
-		#end
 	}
 }
