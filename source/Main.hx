@@ -1,109 +1,163 @@
 package;
 
-import animateatlas.JSONData.AtlasData;
-import openfl.display.BitmapData;
-import animateatlas.JSONData.AnimationData;
-import openfl.display.FPS;
-import openfl.Lib;
-import openfl.events.MouseEvent;
-import animateatlas.HelperEnums.LoopMode;
-import openfl.events.Event;
-import openfl.display.Tilemap;
-import openfl.display.Tileset;
+import flixel.graphics.FlxGraphic;
+import flixel.FlxG;
+import flixel.FlxGame;
+import flixel.FlxState;
 import openfl.Assets;
-import haxe.Json;
-import animateatlas.tilecontainer.TileAnimationLibrary;
-import animateatlas.tilecontainer.TileContainerMovieClip;
-import animateatlas.displayobject.SpriteAnimationLibrary;
-import animateatlas.displayobject.SpriteMovieClip;
+import openfl.Lib;
+import flixel.util.FlxColor;
+import openfl.display.FPS;
 import openfl.display.Sprite;
+import openfl.events.Event;
+import openfl.display.StageScaleMode;
+import lime.app.Application;
+#if desktop
+import backend.Discord.DiscordClient;
+#end
+// crash handler stuff
+#if CRASH_HANDLER
+import openfl.events.UncaughtErrorEvent;
+import haxe.CallStack;
+import haxe.io.Path;
+import sys.FileSystem;
+import sys.io.File;
+import sys.io.Process;
+#end
+import states.LoadingScreenState;
+import states.MainMenuState;
+
+using StringTools;
 
 class Main extends Sprite {
-	var aa:TileAnimationLibrary;
-	var ss:SpriteAnimationLibrary;
+	var game = {
+		width: 1280,
+		height: 720,
+		initialState: LoadingScreenState,
+		zoom: -1.0,
+		framerate: 60,
+		skipSplash: false,
+		startFullscreen: false
+	};
 
-	//
-	var tileSymbols:Array<TileContainerMovieClip>;
+	public static var fpsVar:FPS;
+	public static var changeID:Int = 0;
 
-	var spriteSymbols:Array<SpriteMovieClip>;
+	// You can pretty much ignore everything from here on - your code should go in your states.
 
-	var renderer:Tilemap;
+	public static function main():Void {
+		Lib.current.addChild(new Main());
+	}
 
 	public function new() {
 		super();
-		graphics.beginFill(0x333333);
-		graphics.drawRect(0, 0, Lib.current.stage.stageWidth, Lib.current.stage.stageHeight);
 
-		var animationData:AnimationData = Json.parse(Assets.getText("assets/TEST/Animation.json"));
-		var atlasData:AtlasData = Json.parse(Assets.getText("assets/TEST/spritemap.json"));
-		var bitmapData:BitmapData = Assets.getBitmapData("assets/TEST/spritemap.png");
-
-		aa = new TileAnimationLibrary(animationData, atlasData, bitmapData);
-		ss = new SpriteAnimationLibrary(animationData, atlasData, bitmapData);
-
-		renderer = new Tilemap(Lib.current.stage.stageWidth, Lib.current.stage.stageHeight, null, true);
-
-		renderer.tileAlphaEnabled = false;
-		renderer.tileBlendModeEnabled = false;
-		renderer.tileColorTransformEnabled = false;
-
-		addChild(renderer);
-		addChild(new FPS(10, 10, 0xFFFFFF));
-
-		tileSymbols = [];
-		spriteSymbols = [];
-
-		addEventListener(Event.ENTER_FRAME, update);
-		// addEventListener(MouseEvent.CLICK, addSpriteGirl);
-		addEventListener(MouseEvent.CLICK, addTileGirl);
-	}
-
-	var prev:Int = 0;
-	var dt:Int = 0;
-	var curr:Int = 0;
-
-	public function update(_) {
-		// making a dt
-		curr = Lib.getTimer();
-		dt = curr - prev;
-		prev = curr;
-
-		for (symbol in tileSymbols) {
-			symbol.update(dt);
-		}
-		for (symbol in spriteSymbols) {
-			symbol.update(dt);
+		SUtil.gameCrashCheck();
+		if (stage != null) {
+			init();
+		} else {
+			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 	}
 
-	public function addSpriteGirl(_) {
-		for (i in 0...1) {
-			var t = ss.createAnimation();
-			t.x = mouseX + i * 20 * (-1 * i % 2);
-			t.y = mouseY + i * 20 * (-1 * i % 2);
-
-			addChild(t);
-			t.loopMode = LoopMode.SINGLE_FRAME;
-
-			t.currentLabel = t.getFrameLabels()[Std.random(t.getFrameLabels().length)];
-			spriteSymbols.push(t);
-			trace(spriteSymbols.length);
+	private function init(?E:Event):Void {
+		if (hasEventListener(Event.ADDED_TO_STAGE)) {
+			removeEventListener(Event.ADDED_TO_STAGE, init);
 		}
+
+		setupGame();
 	}
 
-	public function addTileGirl(_) {
-		for (i in 0...1) {
-			var t = aa.createAnimation();
-			t.x = mouseX + i * 5 * (-1 * i % 2);
-			t.y = mouseY + i * 5 * (-1 * i % 2);
+	private function setupGame():Void {
+		var stageWidth:Int = Lib.current.stage.stageWidth;
+		var stageHeight:Int = Lib.current.stage.stageHeight;
 
-			renderer.addTile(t);
-			t.loopMode = LoopMode.SINGLE_FRAME;
-
-			t.currentLabel = t.getFrameLabels()[Std.random(t.getFrameLabels().length)];
-			tileSymbols.push(t);
-
-			trace(tileSymbols.length);
+		if (game.zoom == -1.0) {
+			var ratioX:Float = stageWidth / game.width;
+			var ratioY:Float = stageHeight / game.height;
+			game.zoom = Math.min(ratioX, ratioY);
+			game.width = Math.ceil(stageWidth / game.zoom);
+			game.height = Math.ceil(stageHeight / game.zoom);
 		}
+
+		SUtil.doTheCheck();
+
+		backend.ClientPrefs.loadDefaultKeys();
+		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate,
+			game.skipSplash, game.startFullscreen));
+
+		fpsVar = new FPS(10, 3, 0xFFFFFF);
+		addChild(fpsVar);
+		Lib.current.stage.align = "tl";
+		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
+		if (fpsVar != null) {
+			fpsVar.visible = backend.ClientPrefs.showFPS;
+		}
+
+		FlxG.autoPause = false;
+
+		#if html5
+		FlxG.mouse.visible = false;
+		#end
+
+		#if CRASH_HANDLER
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		#end
+
+		#if desktop
+		if (!DiscordClient.isInitialized) {
+			DiscordClient.initialize();
+			Application.current.window.onClose.add(function() {
+				DiscordClient.shutdown();
+			});
+		}
+		#end
 	}
+
+	public function changeFPSColor(color:FlxColor) {
+		fpsVar.textColor = color;
+	}
+
+	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
+	// very cool person for real they don't get enough credit for their work
+	#if CRASH_HANDLER
+	function onCrash(e:UncaughtErrorEvent):Void {
+		var errorMessage:String = "";
+		var path:String;
+		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+		var dateNow:String = Date.now().toString();
+
+		dateNow = dateNow.replace(" ", "_");
+		dateNow = dateNow.replace(":", "'");
+
+		path = SUtil.getPath() + "crash/" + "ABOBA Engine_" + dateNow + ".log";
+
+		for (stackItem in callStack) {
+			switch (stackItem) {
+				case FilePos(s, file, line, column):
+					errorMessage += file + " (Line " + line + ")\n";
+				default:
+					Sys.println(stackItem);
+			}
+		}
+
+		errorMessage += "\nUncaught Error: "
+			+ e.error
+			+ "\nError!";
+
+		if (!FileSystem.exists(SUtil.getPath() + "crash/"))
+			FileSystem.createDirectory(SUtil.getPath() + "crash/");
+
+		File.saveContent(path, errorMessage + "\n");
+
+		Sys.println(errorMessage);
+		Sys.println("Crash dump saved in " + Path.normalize(path));
+
+		Application.current.window.alert(errorMessage, "Error! SB Engine v" + MainMenuState.sbEngineVersion);
+		#if desktop
+		DiscordClient.shutdown();
+		#end
+		Sys.exit(1);
+	}
+	#end
 }
