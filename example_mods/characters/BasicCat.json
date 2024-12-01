@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-9,
+				-270
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "Battle Cat Left"
+		},
+		{
+			"offsets": [
+				-57,
+				-311
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "Battle Cat Down"
+		},
+		{
+			"offsets": [
+				9,
+				-292
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "Battle Cat Up"
+		},
+		{
+			"offsets": [
+				-59,
+				-275
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "Battle Cat Right"
+		},
+		{
+			"offsets": [
+				-66,
+				-273
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "Battle Cat Idle"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/BasicCat",
+	"position": [
+		0,
+		50
+	],
+	"healthicon": "cat",
+	"flip_x": false,
+	"healthbar_colors": [
+		210,
+		225,
+		255
+	],
+	"camera_position": [
+		0,
+		310
+	],
+	"sing_duration": 6.1,
+	"scale": 1
+}

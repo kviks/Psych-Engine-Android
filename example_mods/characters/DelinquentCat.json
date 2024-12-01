@@ -1,0 +1,122 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				25,
+				-1
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "Delinquent Up"
+		},
+		{
+			"offsets": [
+				97,
+				-11
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "Delinquent Left"
+		},
+		{
+			"offsets": [
+				41,
+				-48
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "Delinquent Down"
+		},
+		{
+			"offsets": [
+				-4,
+				-22
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "Delinquent Idle"
+		},
+		{
+			"offsets": [
+				9,
+				-19
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "Delinquent Right"
+		},
+		{
+			"offsets": [
+				9,
+				-19
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT-alt",
+			"indices": [],
+			"name": "Delinquent STAND RIGHT"
+		},
+		{
+			"offsets": [
+				100,
+				5
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT-alt",
+			"indices": [],
+			"name": "Delinquent STAND LEFT"
+		},
+		{
+			"offsets": [
+				60,
+				-2
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP-alt",
+			"indices": [],
+			"name": "Delinquent STAND UP"
+		},
+		{
+			"offsets": [
+				78,
+				-20
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN-alt",
+			"indices": [],
+			"name": "Delinquent STAND DOWN"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/delinquent",
+	"position": [
+		-40,
+		150
+	],
+	"healthicon": "delinquent",
+	"flip_x": false,
+	"healthbar_colors": [
+		95,
+		85,
+		115
+	],
+	"camera_position": [
+		30,
+		130
+	],
+	"sing_duration": 6.1,
+	"scale": 0.7
+}

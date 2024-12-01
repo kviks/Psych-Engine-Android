@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				-27,
+				-304
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "Battle Cat Down",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				8,
+				-279
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "Battle Cat Idle",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-9,
+				-275
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "Battle Cat Left",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				36,
+				-253
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "Battle Cat Up",
+			"indices": []
+		},
+		{
+			"offsets": [
+				39,
+				-266
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "Battle Cat Right"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/mohawk",
+	"position": [
+		0,
+		0
+	],
+	"healthicon": "mohawk",
+	"flip_x": false,
+	"healthbar_colors": [
+		22,
+		33,
+		44
+	],
+	"camera_position": [
+		-10,
+		290
+	],
+	"sing_duration": 6.1,
+	"scale": 1
+}

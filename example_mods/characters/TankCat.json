@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				1,
+				-90
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "Battle Cat Left"
+		},
+		{
+			"offsets": [
+				-72,
+				-157
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "Battle Cat Down"
+		},
+		{
+			"offsets": [
+				55,
+				-78
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "Battle Cat Up"
+		},
+		{
+			"offsets": [
+				-59,
+				-75
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "Battle Cat Right"
+		},
+		{
+			"offsets": [
+				-64,
+				-80
+			],
+			"loop": false,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "Battle Cat Idle"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/tank",
+	"position": [
+		0,
+		40
+	],
+	"healthicon": "tank",
+	"flip_x": false,
+	"healthbar_colors": [
+		210,
+		225,
+		255
+	],
+	"camera_position": [
+		-80,
+		130
+	],
+	"sing_duration": 6.1,
+	"scale": 1
+}
