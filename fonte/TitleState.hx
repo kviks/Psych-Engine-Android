@@ -1,3 +1,24 @@
+Skip to content
+Sign up
+kviks
+/
+Psych-Engine-Android
+Public template
+Code
+Issues
+13
+Pull requests
+16
+Actions
+Projects
+Wiki
+Security
+Insights
+Psych-Engine-Android/source/TitleState.hx
+@kviks
+kviks shit
+ 1 contributor
+533 lines (449 sloc)  14.4 KB
 package;
 
 #if desktop
@@ -161,7 +182,6 @@ class TitleState extends MusicBeatState
 			/*var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 			diamond.persist = true;
 			diamond.destroyOnNoUse = false;
-
 			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},
 				new FlxRect(-300, -300, FlxG.width * 1.8, FlxG.height * 1.8));
 			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1),
@@ -195,7 +215,7 @@ class TitleState extends MusicBeatState
 		// bg.updateHitbox();
 		add(bg);
 
-		logoBl = new FlxSprite(-150, -100);
+		logoBl = new FlxSprite(0, 0);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = ClientPrefs.globalAntialiasing;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
@@ -531,3 +551,16 @@ class TitleState extends MusicBeatState
 		}
 	}
 }
+© 2022 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Loading complete
